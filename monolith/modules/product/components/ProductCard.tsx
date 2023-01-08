@@ -41,6 +41,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
       <Link href={`/products/${id}`}>
         <div className="relative h-40 w-full">
           <Image
+            sizes={'(min-width: 768px) 15rem, 100vw'}
             src={thumbnail}
             alt={title}
             fill

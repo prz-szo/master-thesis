@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Product } from './index';
 
-const ProductsQueryKey = 'product';
+const ProductQueryKey = 'product';
 
 const SingleProductPage = () => {
   const router = useRouter();
@@ -18,7 +18,7 @@ const SingleProductPage = () => {
   const [quantityCounter, setQuantity] = useState(1);
 
   const { data: product } = useQuery({
-    queryKey: [ProductsQueryKey, router.query.id],
+    queryKey: [ProductQueryKey, router.query.id],
     enabled: !!router.query.id,
     queryFn: () =>
       fetcher
