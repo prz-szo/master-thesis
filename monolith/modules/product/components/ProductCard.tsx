@@ -1,37 +1,63 @@
-import { ButtonRegular } from '@common/components/Buttons';
+import { Button } from '@chakra-ui/react';
+import formatCurrency from '@common/utils/formatCurrency';
 import { RatingStyles } from '@modules/product/components/RatingStyles';
 import { Rating } from '@smastrom/react-rating';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '../../../pages/products';
 
-type Props = {
-  product: Product;
+export const PriceBox = ({
+  price,
+  discountPercentage,
+}: Pick<Product, 'price' | 'discountPercentage'>) => {
+  const priceElementClasses = 'font-bold text-xl';
+  return (
+    <div className="w-auto">
+      {discountPercentage ? (
+        <>
+          <span className="relative text-base before:absolute before:top-1/2 before:h-px before:w-full before:-rotate-6 before:bg-red-600 before:content-['']">
+            Was {formatCurrency(price + price * (discountPercentage / 100))}
+          </span>
+          <div className={priceElementClasses}>Now {formatCurrency(price)}</div>
+        </>
+      ) : (
+        <div className={priceElementClasses}>{formatCurrency(price)}</div>
+      )}
+
+      {discountPercentage ? (
+        <div className="text-xs">
+          You save {formatCurrency(price * (discountPercentage / 100))}
+        </div>
+      ) : null}
+    </div>
+  );
 };
 
-export const ProductCard = ({ product }: Props) => {
-  const { title, price, thumbnail, id, rating } = product;
-  // const { addToCartHandler } = useCartActions();
-  const priceFinal = Math.round(Number(price));
-  // const avgRating = getAvgRating(product.Ratings);
+export const ProductCard = ({ product }: { product: Product }) => {
+  const { title, price, thumbnail, id, rating, discountPercentage } = product;
 
   return (
-    <div className="mb-2 flex w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-violet-600 drop-shadow-md md:w-60">
+    <div className="flex w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-white text-neutral-900 shadow-lg md:w-60 lg:transition lg:duration-300 lg:ease-in-out lg:hover:scale-105">
       <Link href={`/products/${id}`}>
-        <div className="relative h-40 w-full  object-cover ">
-          <Image src={thumbnail} alt={title} fill className="rounded-lg" />
+        <div className="relative h-40 w-full">
+          <Image
+            src={thumbnail}
+            alt={title}
+            fill
+            className="rounded-lg object-cover"
+          />
         </div>
       </Link>
-      <div className="flex w-full flex-col items-center justify-end gap-4 px-3 py-4 ">
+      <div className="flex flex-col items-center justify-end gap-4 px-3 py-3">
         <Link
           href={`/products/${id}`}
           className="flex w-full flex-col items-center justify-end gap-2"
         >
-          <h4 className=" text-center text-xl font-medium hover:text-amber-400 ">
+          <h4 className="text-center text-xl font-medium hover:text-amber-400 ">
             {title}
           </h4>
 
-          <h4 className="text-xl font-bold">${priceFinal}</h4>
+          <PriceBox price={price} discountPercentage={discountPercentage} />
         </Link>
 
         <div className="w-28">
@@ -39,9 +65,9 @@ export const ProductCard = ({ product }: Props) => {
         </div>
 
         <div className="w-full">
-          <ButtonRegular onClick={() => console.log(product, 1)}>
+          <Button colorScheme="teal" size="lg" width="100%">
             Add to Cart
-          </ButtonRegular>
+          </Button>
         </div>
       </div>
     </div>

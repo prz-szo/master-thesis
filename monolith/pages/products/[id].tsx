@@ -1,11 +1,15 @@
 import { MinusIcon, PlusIcon } from '@common/assets';
 import { BigButton } from '@common/components';
-
+import fetcher from '@common/utils/fetcher';
 import { RecommendationsList } from '@modules/product';
+import { useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { Product } from './index';
+
+const ProductsQueryKey = 'product';
 
 const SingleProductPage = () => {
   const router = useRouter();
@@ -13,15 +17,22 @@ const SingleProductPage = () => {
 
   const [quantityCounter, setQuantity] = useState(1);
 
-  if (!router.query) return null;
+  const { data: product } = useQuery({
+    queryKey: [ProductsQueryKey, router.query.id],
+    enabled: !!router.query.id,
+    queryFn: () =>
+      fetcher
+        .get<Product>({ url: `/products/${router.query.id}` })
+        .then((res) => res[0]),
+  });
 
-  const { id } = router.query as { id: string };
-  const item = { data: null };
+  console.log(product);
 
-  if (!item.data) return null;
+  if (!product) {
+    return <div>Loading...</div>;
+  }
 
-  const { image, title, price } = item.data;
-  const finalPrice = Math.round(Number(price));
+  const { title, thumbnail, price } = product;
 
   return (
     <>
@@ -31,8 +42,9 @@ const SingleProductPage = () => {
       <section className="mt-32 flex h-fit flex-col gap-24 py-4 px-4 md:px-8">
         <div className=" flex w-full flex-col items-center justify-between gap-20 md:flex-row md:items-start">
           <div className="b- border- relative h-72 w-72 rounded-lg border-8 border-amber-400 object-cover">
-            <Image src={image} alt={title} fill />
+            <Image src={thumbnail} alt={title} fill />
           </div>
+
           <div className="flex w-full flex-col gap-8 text-center md:w-[80%] md:text-left">
             <h2 className="max-w-sm  text-4xl font-semibold ">{title}</h2>
             <p>
@@ -43,13 +55,16 @@ const SingleProductPage = () => {
               risus aliquam. Ornare pulvinar pretium nunc ante. Sed faucibus
               pretium et id.
             </p>
+
             <div className="flex flex-col justify-between gap-6 md:flex-row">
               <div className="flex flex-col items-center gap-1">
                 <span>Price</span>
-                <span className="text-2xl font-bold">${finalPrice}</span>
+                <span className="text-2xl font-bold">${price}</span>
               </div>
+
               <div className=" relative flex flex-col  items-center gap-1">
                 <span>Quantity</span>
+
                 <div className="flex items-center gap-2">
                   <button
                     className="h-5 w-5"
@@ -72,9 +87,8 @@ const SingleProductPage = () => {
                   </button>
                 </div>
               </div>
-              <BigButton
-                onClick={() => console.log(item.data, quantityCounter)}
-              >
+
+              <BigButton onClick={() => console.log(product, quantityCounter)}>
                 Add to Cart
               </BigButton>
             </div>

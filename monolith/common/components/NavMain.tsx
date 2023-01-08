@@ -33,7 +33,7 @@ export const NavMain = () => {
       </li>
       <li>
         <Link
-          href="/AllProductsPage"
+          href="/products"
           className={`
       transition-all duration-300 hover:text-violet-300 active:text-amber-300 ${
         router.pathname == '/products'

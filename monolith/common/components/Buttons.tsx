@@ -1,4 +1,4 @@
-import ArrowIcon from "../assets/ArrowIcon";
+import ArrowIcon from '../assets/ArrowIcon';
 
 type Props = {
   children: string;
@@ -14,7 +14,7 @@ export const ButtonRegular = ({ children, onClick }: Props) => {
   return (
     <button
       onClick={onClick}
-      className="w-full rounded-lg bg-amber-400 px-5 py-2 font-bold text-violet-700 transition-all duration-300 hover:bg-violet-800 hover:text-amber-400"
+      className="w-full rounded-lg bg-amber-400 px-5 py-2 font-bold text-violet-600 transition-all duration-300 hover:bg-violet-800 hover:text-amber-400"
     >
       {children}
     </button>
