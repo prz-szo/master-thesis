@@ -6,9 +6,6 @@ module.exports = {
   useTabs: false,
   printWidth: 80,
   semi: true,
-  plugins: [
-    require.resolve('prettier-plugin-organize-imports'),
-    require.resolve('prettier-plugin-tailwindcss'),
-  ],
+  plugins: [require.resolve('prettier-plugin-tailwindcss')],
   pluginSearchDirs: false,
 };

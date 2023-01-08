@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export const NavMain = () => {
   const router = useRouter();
@@ -10,9 +10,9 @@ export const NavMain = () => {
           href="/"
           className={`
       transition-all duration-300 hover:text-violet-300 active:text-amber-300 ${
-        router.pathname == "/"
-          ? "font-semibold text-amber-400 "
-          : "text-slate-50 "
+        router.pathname == '/'
+          ? 'font-semibold text-amber-400 '
+          : 'text-slate-50 '
       }`}
         >
           Home
@@ -23,9 +23,9 @@ export const NavMain = () => {
           href="/categories"
           className={`
       transition-all duration-300 hover:text-violet-300 active:text-amber-300 ${
-        router.pathname == "/categories"
-          ? "font-semibold text-amber-400 "
-          : "text-slate-50 "
+        router.pathname == '/categories'
+          ? 'font-semibold text-amber-400 '
+          : 'text-slate-50 '
       }`}
         >
           Categories
@@ -33,12 +33,12 @@ export const NavMain = () => {
       </li>
       <li>
         <Link
-          href="/products"
+          href="/AllProductsPage"
           className={`
       transition-all duration-300 hover:text-violet-300 active:text-amber-300 ${
-        router.pathname == "/products"
-          ? "font-semibold text-amber-400 "
-          : "text-white "
+        router.pathname == '/products'
+          ? 'font-semibold text-amber-400 '
+          : 'text-white '
       }`}
         >
           All Products
