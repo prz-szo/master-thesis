@@ -1,0 +1,47 @@
+import CrossIcon from '@common/assets/CrossIcon';
+import MinusIcon from '@common/assets/MinusIcon';
+import PlusIcon from '@common/assets/PlusIcon';
+import Image from 'next/image';
+
+type Props = {
+  // item: CartItemPlus | CartItemGuest;
+  item: any;
+};
+
+export const CartItemCard = ({ item }: Props) => {
+  const { quantity } = item;
+  const { title, price, image } = item.product;
+  // const { removeItem, addToCartHandler, deleteOne } = useCartActions();
+  const finalPrice = Math.round(Number(price));
+  return (
+    <div className="flex h-32 min-h-[8rem] w-full items-center justify-between border-[3px] border-amber-400 bg-transparent px-2 md:justify-around md:px-0">
+      <div className="flex h-full items-center gap-2 md:gap-6">
+        <div className=" flex flex-col items-start justify-center gap-4">
+          <button
+            className="h-7 w-7"
+            // onClick={() => addToCartHandler(item.product, 1)}
+          >
+            <PlusIcon className="fill-amber-400 transition-all duration-300 hover:fill-violet-400" />
+          </button>
+          <button className="h-7 w-7">
+            <MinusIcon className="fill-amber-400 transition-all duration-300 hover:fill-violet-400" />
+          </button>
+        </div>
+        <div className="relative h-24 w-24 object-cover object-center md:h-full md:w-28">
+          <Image src={image} alt={title} fill />
+        </div>
+      </div>
+      <div className="flex w-1/3 flex-col items-center gap-2">
+        <h6 className="text-center text-lg font-medium">{title}</h6>
+        <div className="flex items-center gap-1 text-sm">
+          Quantity:
+          <span className="text-lg font-medium text-amber-400">{quantity}</span>
+        </div>
+      </div>
+      <p>${finalPrice}</p>
+      <button className="flex h-8 w-8 items-center justify-center rounded-sm bg-amber-400 transition-all duration-300 hover:bg-violet-600">
+        <CrossIcon className="fill-violet-600 transition-all duration-300 hover:fill-amber-400" />
+      </button>
+    </div>
+  );
+};
