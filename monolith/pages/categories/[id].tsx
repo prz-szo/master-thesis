@@ -1,27 +1,56 @@
+import { capitalize } from '@common/utils';
 import fetcher from '@common/utils/fetcher';
 import { ProductCard } from '@modules/product';
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/query-core';
+import { dehydrate, QueryFunction, useQuery } from '@tanstack/react-query';
+import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { ProductsListResponse } from '../products';
+import { Product, ProductsListResponse } from '../products';
+import { CategoriesQueryKey } from './index';
+
+const getProduct: QueryFunction<Product[]> = ({ queryKey }) =>
+  fetcher
+    .get<ProductsListResponse>({ url: `/products/category/${queryKey[1]}` })
+    .then((res) => res[0]?.products ?? []);
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(
+    [CategoriesQueryKey, context.params?.id],
+    getProduct
+  );
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [
+      { params: { id: 'smartphones' } },
+      { params: { id: 'laptops' } },
+      { params: { id: 'fragrances' } },
+    ],
+    fallback: true,
+  };
+}
 
 const SingleCategoryPage = () => {
   const router = useRouter();
   const { id } = router.query as { id: string };
 
   const { data: products } = useQuery({
-    queryKey: ['categories', id],
+    queryKey: [CategoriesQueryKey, id],
     initialData: [],
     enabled: !!id,
-    queryFn: () =>
-      fetcher
-        .get<ProductsListResponse>({ url: `/products/category/${id}` })
-        .then((res) => res[0]?.products ?? []),
+    queryFn: getProduct,
   });
 
-  console.log(products);
-
-  const categoryName = id ? id.charAt(0).toUpperCase() + id.slice(1) : '';
+  const categoryName = capitalize(id);
 
   return (
     <>

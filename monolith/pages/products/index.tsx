@@ -29,7 +29,7 @@ export interface ProductsListResponse extends Paging {
   products: Product[];
 }
 
-const ProductsQueryKey = 'products';
+export const ProductsQueryKey = 'products';
 const getProducts = () =>
   fetcher
     .get<ProductsListResponse>({ url: '/products' })
@@ -47,13 +47,12 @@ export async function getStaticProps() {
 }
 
 const AllProductsPage = () => {
+  // TODO: Add pagination
   const { data: products, isLoading } = useQuery({
     queryKey: [ProductsQueryKey],
     initialData: [],
     queryFn: getProducts,
   });
-
-  console.log(products);
 
   return (
     <>

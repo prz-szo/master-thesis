@@ -1,16 +1,31 @@
 import fetcher from '@common/utils/fetcher';
 import { CategoryList } from '@modules/category/components/CategoryList';
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/query-core';
+import { dehydrate, useQuery } from '@tanstack/react-query';
 import Head from 'next/head';
+
+export const CategoriesQueryKey = 'categories';
+const getCategories = () =>
+  fetcher
+    .get<string[]>({ url: '/products/categories' })
+    .then((res) => res[0] ?? []);
+
+export async function getStaticProps() {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery([CategoriesQueryKey], getCategories);
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
 
 const CategoriesPage = () => {
   const { data: categories } = useQuery({
     queryKey: ['categories'],
     initialData: [],
-    queryFn: () =>
-      fetcher
-        .get<string[]>({ url: '/products/categories' })
-        .then((res) => res[0] ?? []),
+    queryFn: getCategories,
   });
 
   return (

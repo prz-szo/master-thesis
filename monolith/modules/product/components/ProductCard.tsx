@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react';
-import formatCurrency from '@common/utils/formatCurrency';
+import { formatCurrency } from '@common/utils';
 import { RatingStyles } from '@modules/product/components/RatingStyles';
 import { Rating } from '@smastrom/react-rating';
 import Image from 'next/image';

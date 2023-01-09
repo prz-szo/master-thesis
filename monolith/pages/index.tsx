@@ -3,6 +3,7 @@ import { RecommendationsList } from '@modules/product';
 import Head from 'next/head';
 
 export default function Home() {
+  // TODO: Add real data
   const featuredProd = { data: [] };
 
   return (

@@ -2,14 +2,46 @@ import { MinusIcon, PlusIcon } from '@common/assets';
 import { BigButton } from '@common/components';
 import fetcher from '@common/utils/fetcher';
 import { RecommendationsList } from '@modules/product';
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/query-core';
+import { dehydrate, QueryFunction, useQuery } from '@tanstack/react-query';
+import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Product } from './index';
+import { Product, ProductsQueryKey } from './index';
 
-const ProductQueryKey = 'product';
+const getProduct: QueryFunction<Product | null> = ({ queryKey }) =>
+  fetcher
+    .get<Product>({ url: `/products/${queryKey[1]}` })
+    .then((res) => res[0]);
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(
+    [ProductsQueryKey, context.params?.id],
+    getProduct
+  );
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [
+      { params: { id: '1' } },
+      { params: { id: '2' } },
+      { params: { id: '3' } },
+      { params: { id: '4' } },
+      { params: { id: '5' } },
+    ],
+    fallback: true,
+  };
+}
 
 const SingleProductPage = () => {
   const router = useRouter();
@@ -18,15 +50,10 @@ const SingleProductPage = () => {
   const [quantityCounter, setQuantity] = useState(1);
 
   const { data: product } = useQuery({
-    queryKey: [ProductQueryKey, router.query.id],
+    queryKey: [ProductsQueryKey, router.query.id],
     enabled: !!router.query.id,
-    queryFn: () =>
-      fetcher
-        .get<Product>({ url: `/products/${router.query.id}` })
-        .then((res) => res[0]),
+    queryFn: getProduct,
   });
-
-  console.log(product);
 
   if (!product) {
     return <div>Loading...</div>;
@@ -41,8 +68,8 @@ const SingleProductPage = () => {
       </Head>
       <section className="mt-32 flex h-fit flex-col gap-24 py-4 px-4 md:px-8">
         <div className=" flex w-full flex-col items-center justify-between gap-20 md:flex-row md:items-start">
-          <div className="b- border- relative h-72 w-72 rounded-lg border-8 border-amber-400 object-cover">
-            <Image src={thumbnail} alt={title} fill />
+          <div className="relative h-72 w-96 rounded-lg border-8 border-amber-400 object-cover">
+            <Image src={thumbnail} alt={title} fill className="object-cover" />
           </div>
 
           <div className="flex w-full flex-col gap-8 text-center md:w-[80%] md:text-left">
