@@ -1,5 +1,5 @@
-import ArrowCarouselIcon from '@common/assets/ArrowCarouselIcon';
-import { ProductCard } from '@modules/product/components/ProductCard';
+import { ArrowCarouselIcon } from '@common/assets';
+import { Product, ProductCard } from '@modules/product';
 import { useEffect, useRef, useState } from 'react';
 
 interface Ref extends HTMLDivElement {
@@ -8,11 +8,7 @@ interface Ref extends HTMLDivElement {
   scrollWidth: number;
 }
 
-export const RecommendationsList = ({
-  items,
-}: {
-  items: any[] | undefined;
-}) => {
+export const RecommendationsList = ({ items }: { items: Product[] }) => {
   const carousel = useRef<Ref>(null);
   const maxScrollWidth = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -64,11 +60,12 @@ export const RecommendationsList = ({
   }, [currentIndex]);
 
   return (
-    <div className=" flex flex-col gap-6  ">
-      <h4 className="ml-4 w-fit rounded-md bg-violet-600 px-4  py-1 font-semibold drop-shadow-sm">
+    <div className="flex w-full flex-col gap-6">
+      <h4 className="ml-4 w-fit rounded-md bg-violet-600 px-4 py-1 font-semibold drop-shadow-sm">
         Featured Products
       </h4>
-      <div className="relative ">
+
+      <div className="relative h-auto">
         <div className="absolute hidden h-full w-full items-center justify-between md:flex">
           <button
             onClick={movePrev}
@@ -85,13 +82,14 @@ export const RecommendationsList = ({
             <ArrowCarouselIcon className=" fill-violet-600 transition-all duration-300 hover:fill-amber-400 group-hover:fill-amber-400" />
           </button>
         </div>
+
         <div
-          className=" relative  flex touch-pan-x snap-x snap-mandatory justify-between gap-6 overflow-x-auto scroll-smooth md:overflow-x-hidden  "
+          className="relative flex touch-pan-x snap-x snap-mandatory justify-between gap-6 overflow-x-auto scroll-smooth md:overflow-x-hidden"
           ref={carousel}
         >
-          {items?.map((el) => {
-            return <ProductCard product={el} key={el.id} />;
-          })}
+          {items.map((el) => (
+            <ProductCard product={el} key={el.id} />
+          ))}
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { NavMain } from './NavMain';
 
 export const Header = () => {
   const userId = 1;
+  // TODO: Add real data
   const { data: cartItems } = { data: [] as any[] };
   let totalQuantity = 0;
 

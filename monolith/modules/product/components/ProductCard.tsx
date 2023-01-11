@@ -1,10 +1,9 @@
 import { Button } from '@chakra-ui/react';
 import { formatCurrency } from '@common/utils';
-import { RatingStyles } from '@modules/product/components/RatingStyles';
+import { Product, RatingStyles } from '@modules/product';
 import { Rating } from '@smastrom/react-rating';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Product } from '../../../pages/products';
 
 export const PriceBox = ({
   price,

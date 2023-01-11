@@ -1,19 +1,21 @@
-import { type ReactNode } from "react";
-import { Footer } from "./Footer";
-import { Header } from "./Header";
+import { Footer } from '@common/components/Footer';
+import { Header } from '@common/components/Header';
+import { type ReactNode } from 'react';
 
 type Props = {
   children: ReactNode;
 };
 
-export default function Layout({ children }: Props) {
+export function Layout({ children }: Props) {
   return (
-    <>
+    <div className="flex h-full min-h-screen flex-col">
       <Header />
-      <main className="flex w-full flex-col gap-28 bg-violet-700 text-slate-50">
+      <main className="max-width-layout mx-auto flex h-auto w-full grow flex-col p-6">
         {children}
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
+
+export default Layout;

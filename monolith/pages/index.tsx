@@ -1,11 +1,33 @@
 import { HeroSection } from '@common/components';
-import { RecommendationsList } from '@modules/product';
+import fetcher from '@common/utils/fetcher';
+import {
+  Product,
+  ProductsListResponse,
+  RecommendationsList,
+} from '@modules/product';
 import Head from 'next/head';
 
-export default function Home() {
-  // TODO: Add real data
-  const featuredProd = { data: [] };
+export async function getStaticProps() {
+  const randomLimit = Math.floor(Math.random() * 100) + 1;
+  const randomSkip = Math.floor(Math.random() * 100) + 1;
+  const products = await fetcher
+    .get<ProductsListResponse>({
+      url: `/products?limit=${randomLimit}&skip=${randomSkip}`,
+    })
+    .then((res) => res[0]?.products ?? []);
 
+  return {
+    props: {
+      featuredProducts: products,
+    },
+  };
+}
+
+export default function Home({
+  featuredProducts,
+}: {
+  featuredProducts: Product[];
+}) {
   return (
     <>
       <Head>
@@ -15,9 +37,7 @@ export default function Home() {
       </Head>
 
       <HeroSection />
-      <div className="px-4">
-        <RecommendationsList items={featuredProd.data} />
-      </div>
+      <RecommendationsList items={featuredProducts} />
     </>
   );
 }

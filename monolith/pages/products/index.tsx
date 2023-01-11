@@ -1,39 +1,13 @@
 import { Spinner } from '@chakra-ui/react';
-import fetcher from '@common/utils/fetcher';
-import { ProductCard } from '@modules/product';
+import {
+  getProducts,
+  ProductCard,
+  ProductsQueryKey,
+  useProducts,
+} from '@modules/product';
 import { QueryClient } from '@tanstack/query-core';
-import { dehydrate, useQuery } from '@tanstack/react-query';
+import { dehydrate } from '@tanstack/react-query';
 import Head from 'next/head';
-
-export interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  brand: string;
-  category: string;
-  thumbnail: string;
-  images: string[];
-}
-
-interface Paging {
-  total: number;
-  skip: number;
-  limit: number;
-}
-
-export interface ProductsListResponse extends Paging {
-  products: Product[];
-}
-
-export const ProductsQueryKey = 'products';
-const getProducts = () =>
-  fetcher
-    .get<ProductsListResponse>({ url: '/products' })
-    .then((res) => res[0]?.products ?? []);
 
 export async function getStaticProps() {
   const queryClient = new QueryClient();
@@ -47,12 +21,7 @@ export async function getStaticProps() {
 }
 
 const AllProductsPage = () => {
-  // TODO: Add pagination
-  const { data: products, isLoading } = useQuery({
-    queryKey: [ProductsQueryKey],
-    initialData: [],
-    queryFn: getProducts,
-  });
+  const { products, isLoading } = useProducts();
 
   return (
     <>

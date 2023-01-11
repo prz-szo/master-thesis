@@ -1,26 +1,23 @@
 import { MinusIcon, PlusIcon } from '@common/assets';
 import { BigButton } from '@common/components';
-import fetcher from '@common/utils/fetcher';
-import { RecommendationsList } from '@modules/product';
+import {
+  productFetcher,
+  ProductsQueryKey,
+  RecommendationsList,
+  useSingleProduct,
+} from '@modules/product';
 import { QueryClient } from '@tanstack/query-core';
-import { dehydrate, QueryFunction, useQuery } from '@tanstack/react-query';
+import { dehydrate } from '@tanstack/react-query';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Product, ProductsQueryKey } from './index';
-
-const getProduct: QueryFunction<Product | null> = ({ queryKey }) =>
-  fetcher
-    .get<Product>({ url: `/products/${queryKey[1]}` })
-    .then((res) => res[0]);
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(
     [ProductsQueryKey, context.params?.id],
-    getProduct
+    productFetcher
   );
 
   return {
@@ -44,16 +41,11 @@ export async function getStaticPaths() {
 }
 
 const SingleProductPage = () => {
-  const router = useRouter();
   const featured = { data: [] };
 
   const [quantityCounter, setQuantity] = useState(1);
 
-  const { data: product } = useQuery({
-    queryKey: [ProductsQueryKey, router.query.id],
-    enabled: !!router.query.id,
-    queryFn: getProduct,
-  });
+  const { product } = useSingleProduct();
 
   if (!product) {
     return <div>Loading...</div>;

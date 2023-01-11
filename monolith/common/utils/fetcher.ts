@@ -52,7 +52,7 @@ const mutate = async <TPayload, TData>({
   return [data, null];
 };
 
-const fetcher = {
+export const fetcher = {
   get,
   mutate,
 };
