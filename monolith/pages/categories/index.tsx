@@ -29,7 +29,9 @@ const CategoriesPage = () => {
       </Head>
 
       <section className="h-fit w-full pt-20">
-        <h2 className="mb-8 text-3xl font-bold ">All Categories</h2>
+        <h2 className="mb-8 text-center text-3xl font-bold lg:text-7xl">
+          All Categories
+        </h2>
 
         <CategoryList categories={categories} />
       </section>

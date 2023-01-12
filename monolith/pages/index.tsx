@@ -7,7 +7,7 @@ import {
 } from '@modules/product';
 import Head from 'next/head';
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const randomLimit = Math.floor(Math.random() * 100) + 1;
   const randomSkip = Math.floor(Math.random() * 100) + 1;
   const products = await fetcher

@@ -1,3 +1,4 @@
+import { Spinner } from '@chakra-ui/react';
 import { capitalize } from '@common/utils';
 import {
   categoriesFetcher,
@@ -10,6 +11,7 @@ import { QueryClient } from '@tanstack/query-core';
 import { dehydrate } from '@tanstack/react-query';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const queryClient = new QueryClient();
@@ -35,7 +37,11 @@ export async function getStaticPaths() {
 }
 
 const SingleCategoryPage = () => {
-  const { categoryProducts, category } = useCategoryProducts();
+  const router = useRouter();
+  const { id = '' } = router.query as { id: string };
+
+  const { categoryProducts, category, areProductsLoading } =
+    useCategoryProducts(id);
 
   const categoryName = capitalize(category);
 
@@ -45,13 +51,17 @@ const SingleCategoryPage = () => {
         <title>{categoryName}</title>
       </Head>
 
-      <section className="mt-20 h-fit w-full">
-        <h2 className="mb-8 text-3xl font-bold">{categoryName}</h2>
+      <section className="mt-20 h-fit">
+        <div className="flex flex-col items-center justify-center">
+          <h2 className="mb-8 text-3xl font-bold">{categoryName}</h2>
 
-        <div className="flex grid-cols-5 flex-col gap-4 lg:grid">
-          {categoryProducts.map((el) => (
-            <ProductCard product={el} key={el.id} />
-          ))}
+          <div className="grid auto-cols-max grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {categoryProducts.map((el) => (
+              <ProductCard product={el} key={el.id} />
+            ))}
+          </div>
+
+          {areProductsLoading ? <Spinner /> : null}
         </div>
       </section>
     </>

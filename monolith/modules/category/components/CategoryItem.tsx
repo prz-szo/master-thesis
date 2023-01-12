@@ -9,7 +9,7 @@ export const CategoryItem = ({ id, name }: { id: string; name: string }) => {
       href={`/categories/${id}`}
       className="group relative h-64 w-full overflow-hidden"
     >
-      <div className="absolute z-10 h-full w-full  bg-violet-700 object-cover opacity-50 bg-blend-overlay transition duration-500 group-hover:bg-opacity-0 "></div>
+      <div className="absolute z-10 h-full w-full bg-violet-700 object-cover opacity-50 bg-blend-overlay transition duration-500 group-hover:bg-opacity-0 "></div>
 
       <Image
         alt={capitalizedName}
@@ -19,7 +19,7 @@ export const CategoryItem = ({ id, name }: { id: string; name: string }) => {
         fill
       />
 
-      <h4 className="absolute top-1/2 left-1/2 z-[12] -translate-y-1/2 -translate-x-1/2 text-center text-2xl font-semibold">
+      <h4 className="absolute top-1/2 left-1/2 z-[12] -translate-y-1/2 -translate-x-1/2 text-center text-3xl font-semibold text-white lg:text-5xl">
         {capitalizedName}
       </h4>
     </Link>

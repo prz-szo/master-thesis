@@ -1,5 +1,6 @@
 import { MinusIcon, PlusIcon } from '@common/assets';
 import { BigButton } from '@common/components';
+import { useCategoryProducts } from '@modules/category';
 import {
   productFetcher,
   ProductsQueryKey,
@@ -41,11 +42,11 @@ export async function getStaticPaths() {
 }
 
 const SingleProductPage = () => {
-  const featured = { data: [] };
-
   const [quantityCounter, setQuantity] = useState(1);
 
   const { product } = useSingleProduct();
+
+  const { categoryProducts } = useCategoryProducts(product?.category);
 
   if (!product) {
     return <div>Loading...</div>;
@@ -113,7 +114,7 @@ const SingleProductPage = () => {
             </div>
           </div>
         </div>
-        <RecommendationsList items={featured.data} />
+        <RecommendationsList items={categoryProducts} />
       </section>
     </>
   );
