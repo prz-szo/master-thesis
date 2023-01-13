@@ -28,11 +28,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <Layout>
-          <ChakraProvider>
+        <ChakraProvider>
+          <Layout>
             <Component {...pageProps} />
-          </ChakraProvider>
-        </Layout>
+          </Layout>
+        </ChakraProvider>
       </Hydrate>
 
       <ReactQueryDevtools initialIsOpen={false} />

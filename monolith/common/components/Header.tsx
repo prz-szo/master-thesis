@@ -1,26 +1,18 @@
+import { Button, useToast } from '@chakra-ui/react';
+import { CartDrawer, useCart } from '@modules/cart';
 import Link from 'next/link';
-import CartIcon from '../assets/CartIcon';
-import ProfileIcon from '../assets/ProfileIcon';
 import { NavMain } from './NavMain';
 
 export const Header = () => {
-  const userId = 1;
-  // TODO: Add real data
-  const { data: cartItems } = { data: [] as any[] };
-  let totalQuantity = 0;
+  const toast = useToast();
 
-  if (cartItems) {
-    cartItems?.forEach((el) => {
-      totalQuantity += el.quantity;
-    });
-  } else {
-    totalQuantity = 0; //getCartQuantity();
-  }
+  const { cart } = useCart();
+  const totalQuantity = cart?.totalQuantity ?? 0;
 
   return (
-    <header className="drop-shadow-header fixed top-0 left-0 right-0 z-20 flex items-center justify-between gap-10 bg-violet-800 py-4 px-10 font-medium text-slate-50 backdrop-blur  md:justify-start">
+    <header className="drop-shadow-header fixed top-0 left-0 right-0 z-20 flex items-center justify-between gap-10 bg-neutral-800 py-4 px-10 font-medium text-slate-50 backdrop-blur  md:justify-start">
       <Link href="/">
-        <h3 className="whitespace-nowrap text-2xl font-bold text-amber-400 transition-all duration-300 hover:text-violet-400">
+        <h3 className="whitespace-nowrap text-2xl font-bold text-amber-500 transition-all duration-300 hover:text-amber-100">
           Art－Pot Shop
         </h3>
       </Link>
@@ -29,41 +21,46 @@ export const Header = () => {
         <NavMain />
 
         <ul className="flex items-center gap-8">
-          <li className="relative ">
-            <button
-              onClick={() => console.info('Cart toggle')}
-              className="group"
-            >
-              <div className="h-7 w-7 ">
-                <CartIcon className="fill-amber-400 transition-all duration-300 hover:fill-violet-400" />
-              </div>
-            </button>
+          <li className="relative">
+            <CartDrawer />
 
-            <span className="items absolute -bottom-2 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600">
+            <span className="items absolute -bottom-2 -right-3 box-content flex h-5 w-5 items-center justify-center rounded-full border-2 border-amber-500 bg-slate-50 text-amber-500">
               <span className="text-sm font-bold transition-all duration-300">
                 {totalQuantity}
               </span>
             </span>
           </li>
-          {userId && (
-            <li>
-              <Link
-                href={`/profile/${userId ? userId : '#'}`}
-                className="h-fit w-fit"
-              >
-                <div className="h-7 w-7">
-                  <ProfileIcon className="fill-amber-400 hover:fill-violet-400 " />
-                </div>
-              </Link>
-            </li>
-          )}
+
+          {/*{userId && (*/}
+          {/*  <li>*/}
+          {/*    <Link*/}
+          {/*      href={`/profile/${userId ? userId : '#'}`}*/}
+          {/*      className="h-fit w-fit"*/}
+          {/*    >*/}
+          {/*      <div className="h-7 w-7">*/}
+          {/*        <ProfileIcon className="fill-amber-400 hover:fill-violet-400 " />*/}
+          {/*      </div>*/}
+          {/*    </Link>*/}
+          {/*  </li>*/}
+          {/*)}*/}
           <li>
-            <button
-              className="outline-amber  rounded-sm bg-transparent px-3 py-1 text-amber-400 outline outline-2 transition-all duration-300 hover:bg-amber-400/20 hover:bg-opacity-10 md:px-4"
-              onClick={() => console.info('Logout')}
+            <Button
+              variant="outline"
+              className="hover:text-amber-500"
+              onClick={() =>
+                toast({
+                  title: "We're sorry. This feature is not available yet.",
+                  description:
+                    "We're doing our best to implement it as soon as possible. Please check back later.",
+                  status: 'info',
+                  duration: 5000,
+                  position: 'top',
+                  isClosable: true,
+                })
+              }
             >
               Sign in
-            </button>
+            </Button>
           </li>
         </ul>
       </nav>

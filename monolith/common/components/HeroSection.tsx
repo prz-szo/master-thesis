@@ -8,6 +8,7 @@ export const HeroSection = () => {
           <h1 className="text-5xl font-extrabold">Welcome to Art-Pot shop</h1>
           <p className="text-2xl font-medium">Demo ecommerce app.</p>
         </div>
+
         <ArrowLinkBtn url="/products">Shop now</ArrowLinkBtn>
       </div>
     </section>

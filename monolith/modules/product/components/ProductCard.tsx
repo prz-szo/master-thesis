@@ -11,13 +11,15 @@ export const PriceBox = ({
 }: Pick<Product, 'price' | 'discountPercentage'>) => {
   const priceElementClasses = 'font-bold text-xl';
   return (
-    <div className="w-auto">
+    <div className="flex-col">
       {discountPercentage ? (
         <>
           <span className="relative text-base before:absolute before:top-1/2 before:h-px before:w-full before:-rotate-6 before:bg-red-600 before:content-['']">
-            Was {formatCurrency(price + price * (discountPercentage / 100))}
+            Was {formatCurrency(price)}
           </span>
-          <div className={priceElementClasses}>Now {formatCurrency(price)}</div>
+          <div className={priceElementClasses}>
+            Now {formatCurrency(price - price * (discountPercentage / 100))}
+          </div>
         </>
       ) : (
         <div className={priceElementClasses}>{formatCurrency(price)}</div>
@@ -36,7 +38,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
   const { title, price, thumbnail, id, rating, discountPercentage } = product;
 
   return (
-    <div className="flex w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-white text-neutral-900 shadow-lg md:w-60 lg:transition lg:duration-300 lg:ease-in-out lg:hover:scale-105">
+    <div className="flex w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-slate-50 text-neutral-900 shadow-lg md:w-60 lg:transition lg:duration-300 lg:ease-in-out lg:hover:scale-105">
       <Link href={`/products/${id}`}>
         <div className="relative h-40 w-full">
           <Image

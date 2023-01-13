@@ -61,7 +61,7 @@ export const RecommendationsList = ({ items }: { items: Product[] }) => {
 
   return (
     <div className="flex w-full flex-col gap-6">
-      <h4 className="ml-4 w-fit rounded-md bg-violet-600 px-4 py-1 font-semibold drop-shadow-sm">
+      <h4 className="ml-4 w-fit rounded-md px-4 py-1 text-3xl font-semibold drop-shadow-sm">
         Featured Products
       </h4>
 
@@ -69,17 +69,18 @@ export const RecommendationsList = ({ items }: { items: Product[] }) => {
         <div className="absolute hidden h-full w-full items-center justify-between md:flex">
           <button
             onClick={movePrev}
-            className="group relative z-10 h-12 w-12 rotate-180 rounded-full bg-amber-400 p-2 transition-all duration-300 hover:bg-violet-800 disabled:opacity-0"
+            className="group relative z-10 h-12 w-12 rotate-180 rounded-full bg-amber-400 p-2 transition-all duration-300 hover:bg-slate-800 disabled:opacity-0"
             disabled={isDisabled('prev')}
           >
-            <ArrowCarouselIcon className=" fill-violet-600 transition-all duration-300 hover:fill-amber-400 group-hover:fill-amber-400" />
+            <ArrowCarouselIcon className="fill-slate-800 transition-all duration-300 hover:fill-amber-400 group-hover:fill-amber-400" />
           </button>
+
           <button
             onClick={moveNext}
-            className="group relative z-10 h-12 w-12 rounded-full bg-amber-400 p-2 transition-all duration-300 hover:bg-violet-800 disabled:opacity-0"
+            className="group relative z-10 h-12 w-12 rounded-full bg-amber-400 p-2 transition-all duration-300 hover:bg-slate-800 disabled:opacity-0"
             disabled={isDisabled('next')}
           >
-            <ArrowCarouselIcon className=" fill-violet-600 transition-all duration-300 hover:fill-amber-400 group-hover:fill-amber-400" />
+            <ArrowCarouselIcon className="fill-slate-800 transition-all duration-300 hover:fill-amber-400 group-hover:fill-amber-400" />
           </button>
         </div>
 

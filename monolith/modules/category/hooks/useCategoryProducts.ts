@@ -9,7 +9,7 @@ export const categoryProductsFetcher: QueryFunction<Product[]> = ({
 }) =>
   fetcher
     .get<ProductsListResponse>({
-      url: `/products/category/${queryKey[1]}?limit=20`,
+      url: `/products/category/${queryKey[1]}`,
     })
     .then((res) => res[0]?.products ?? []);
 
@@ -19,8 +19,6 @@ export const useCategoryProducts = (category = '') => {
     enabled: !!category,
     queryFn: categoryProductsFetcher,
   });
-
-  console.log(category);
 
   return useMemo(
     () => ({
