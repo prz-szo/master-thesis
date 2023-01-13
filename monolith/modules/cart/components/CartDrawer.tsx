@@ -31,7 +31,7 @@ export const CartDrawer = () => {
         </div>
       </button>
 
-      <Drawer isOpen={isOpen} placement="right" size="md" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="right" size="lg" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerHeader fontSize={'x-large'}>Your shopping cart</DrawerHeader>
@@ -53,7 +53,7 @@ export const CartDrawer = () => {
               <div className="flex h-fit flex-col gap-4 overflow-y-auto">
                 {cart
                   ? cart.products.map((el) => (
-                      <CartItemCard key={el.id} item={el} />
+                      <CartItemCard key={el.id} {...el} />
                     ))
                   : null}
               </div>
