@@ -10,6 +10,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { ArrowBtn, OutlineBtn } from '@common/components';
+import { formatCurrency } from '@common/utils';
 import { CartItemCard, useCart } from '@modules/cart';
 import CartIcon from '../../../common/assets/CartIcon';
 
@@ -34,12 +35,12 @@ export const CartDrawer = () => {
       <Drawer isOpen={isOpen} placement="right" size="lg" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader fontSize={'x-large'}>Your shopping cart</DrawerHeader>
+          <DrawerHeader fontSize={'xx-large'}>Your shopping cart</DrawerHeader>
           <DrawerCloseButton />
 
           <DrawerBody>
-            <div className="flex flex-col gap-6">
-              <div className="flex items-center justify-between gap-8">
+            <div className="flex h-full flex-col gap-6">
+              <div className="flex flex-none items-center justify-between gap-8">
                 <div className="flex items-center gap-2">
                   <h4 className="text-2xl font-medium">My Basket</h4>
                   <p>{`(${cart?.totalQuantity ?? 0} items)`}</p>
@@ -50,12 +51,16 @@ export const CartDrawer = () => {
                 </div>
               </div>
 
-              <div className="flex h-fit flex-col gap-4 overflow-y-auto">
-                {cart
-                  ? cart.products.map((el) => (
-                      <CartItemCard key={el.id} {...el} />
-                    ))
-                  : null}
+              <div className="flex flex-1 flex-col gap-4 overflow-y-auto px-2">
+                {cart?.products.length ? (
+                  cart.products.map((el) => (
+                    <CartItemCard key={el.id} {...el} />
+                  ))
+                ) : (
+                  <span className="my-auto text-center text-2xl">
+                    Your cart is empty
+                  </span>
+                )}
               </div>
             </div>
           </DrawerBody>
@@ -64,10 +69,10 @@ export const CartDrawer = () => {
             <div className="flex w-full justify-between justify-self-end py-4 px-4 md:px-8 md:py-6">
               {cart && (
                 <div className="flex flex-col gap-2">
-                  <h6 className=" font-medium">Subtotal Amount:</h6>
-                  <h6 className="text-2xl font-semibold">
-                    ${cart.discountedTotal}
-                  </h6>
+                  <h6 className="font-medium">Subtotal Amount:</h6>
+                  <span className="text-2xl font-semibold">
+                    {formatCurrency(cart.discountedTotal)}
+                  </span>
                 </div>
               )}
 

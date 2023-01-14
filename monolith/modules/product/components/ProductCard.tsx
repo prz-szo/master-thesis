@@ -1,5 +1,6 @@
 import { Button } from '@chakra-ui/react';
 import { formatCurrency } from '@common/utils';
+import { useCart } from '@modules/cart';
 import { Product, RatingStyles } from '@modules/product';
 import { Rating } from '@smastrom/react-rating';
 import Image from 'next/image';
@@ -35,6 +36,8 @@ export const PriceBox = ({
 };
 
 export const ProductCard = ({ product }: { product: Product }) => {
+  const { addToCart } = useCart();
+
   const { title, price, thumbnail, id, rating, discountPercentage } = product;
 
   return (
@@ -67,7 +70,12 @@ export const ProductCard = ({ product }: { product: Product }) => {
         </div>
 
         <div className="w-full">
-          <Button colorScheme="teal" size="lg" width="100%">
+          <Button
+            colorScheme="teal"
+            size="lg"
+            width="100%"
+            onClick={() => addToCart({ newProduct: product, quantity: 1 })}
+          >
             Add to Cart
           </Button>
         </div>

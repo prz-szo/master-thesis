@@ -1,5 +1,6 @@
 import { Button, HStack, Input, useNumberInput } from '@chakra-ui/react';
 import { formatCurrency } from '@common/utils';
+import { useCart } from '@modules/cart';
 import {
   CategoriesQueryKey,
   categoryProductsFetcher,
@@ -87,12 +88,11 @@ export const QuantityInput = ({
 };
 
 const SingleProductPage = () => {
-  // TODO: Check if that product is currently in the cart
-  const [quantityCounter, setQuantity] = useState(1);
-
   const { product } = useSingleProduct();
-
   const { categoryProducts } = useCategoryProducts(product?.category);
+
+  const { addToCart } = useCart();
+  const [quantityCounter, setQuantity] = useState(1);
 
   if (!product) {
     return <div>Loading...</div>;
@@ -101,10 +101,8 @@ const SingleProductPage = () => {
   const { title, thumbnail, price, discountPercentage } = product;
 
   // TODO: Add to cart
-  // TODO: Change quantity
-  // TODO: Remove from cart
-  const addToCart = () => {
-    console.log(product, quantityCounter);
+  const addToCartHandler = () => {
+    addToCart({ newProduct: product, quantity: quantityCounter });
   };
 
   return (
@@ -112,6 +110,7 @@ const SingleProductPage = () => {
       <Head>
         <title>{title}</title>
       </Head>
+
       <section className="mt-32 flex h-fit flex-col gap-24 py-4 px-4 md:px-8">
         <div className=" flex w-full flex-col items-center justify-between gap-20 md:flex-row md:items-start">
           <div className="relative h-72 w-96 rounded-lg border-0 object-cover">
@@ -156,7 +155,7 @@ const SingleProductPage = () => {
                 <QuantityInput value={quantityCounter} onChange={setQuantity} />
               </div>
 
-              <Button size="lg" onClick={addToCart}>
+              <Button h={70} size="lg" onClick={addToCartHandler}>
                 Add to Cart
               </Button>
             </div>
