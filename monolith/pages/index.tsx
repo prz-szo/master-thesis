@@ -8,11 +8,10 @@ import {
 import Head from 'next/head';
 
 export async function getServerSideProps() {
-  const randomLimit = Math.floor(Math.random() * 100) + 1;
   const randomSkip = Math.floor(Math.random() * 100) + 1;
   const products = await fetcher
     .get<ProductsListResponse>({
-      url: `/products?limit=${randomLimit}&skip=${randomSkip}`,
+      url: `/products?limit=18&skip=${randomSkip}`,
     })
     .then((res) => res[0]?.products ?? []);
 

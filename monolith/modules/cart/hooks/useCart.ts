@@ -81,7 +81,6 @@ export const useCart = () => {
 
   const { mutate: addToCart } = useMutation({
     mutationFn: async ({ newProduct, quantity }: AddToCartPayload) => {
-      // const currentCart = qClient.getQueryData<Cart>(['cart']);
       if (!cart) {
         return;
       }
@@ -121,7 +120,6 @@ export const useCart = () => {
       productId,
       quantity,
     }: UpdateProductQuantityPayload) => {
-      // const currentCart = qClient.getQueryData<Cart>(['cart']);
       if (!cart) {
         return;
       }
@@ -148,7 +146,6 @@ export const useCart = () => {
 
   const { mutate: removeFromCart } = useMutation({
     mutationFn: async (productId: number) => {
-      // const currentCart = qClient.getQueryData<Cart>(['cart']);
       if (!cart) {
         return;
       }
@@ -170,7 +167,6 @@ export const useCart = () => {
 
   const { mutate: clearCart } = useMutation({
     mutationFn: async () => {
-      // const currentCart = qClient.getQueryData<Cart>(['cart']);
       if (!cart) {
         return;
       }

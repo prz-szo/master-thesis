@@ -100,7 +100,6 @@ const SingleProductPage = () => {
 
   const { title, thumbnail, price, discountPercentage } = product;
 
-  // TODO: Add to cart
   const addToCartHandler = () => {
     addToCart({ newProduct: product, quantity: quantityCounter });
   };
