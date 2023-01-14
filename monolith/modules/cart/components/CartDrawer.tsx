@@ -18,10 +18,10 @@ export const CartDrawer = () => {
   const toast = useToast();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const { cart } = useCart();
+  const { cart, clearCart } = useCart();
 
-  const clearCart = () => {
-    // clearCart();
+  const clearCartHandler = () => {
+    clearCart();
   };
 
   return (
@@ -46,8 +46,7 @@ export const CartDrawer = () => {
                   <p>{`(${cart?.totalQuantity ?? 0} items)`}</p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <OutlineBtn onClick={clearCart}>Clear</OutlineBtn>
-                  <OutlineBtn onClick={onToggle}>Close</OutlineBtn>
+                  <OutlineBtn onClick={clearCartHandler}>Clear</OutlineBtn>
                 </div>
               </div>
 

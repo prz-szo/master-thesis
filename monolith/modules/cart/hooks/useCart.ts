@@ -1,9 +1,8 @@
-import { fetcher } from '@common/utils';
 import { Cart, CartItem } from '@modules/cart';
 import { Product } from '@modules/product';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
-const cartId = Math.floor(Math.random() * 20) + 1;
+import { useCallback, useMemo } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 
 const roundUp = (num: number, precision = 2) => {
   const factor = 10 ** precision;
@@ -20,7 +19,7 @@ interface UpdateProductQuantityPayload {
   quantity: number;
 }
 
-function recalculateProductTotals(existingProduct: CartItem) {
+const recalculateProductTotals = (existingProduct: CartItem) => {
   existingProduct.total = existingProduct.quantity * existingProduct.price;
 
   const discountedPricePercentage =
@@ -29,9 +28,9 @@ function recalculateProductTotals(existingProduct: CartItem) {
   existingProduct.discountedPrice = roundUp(
     existingProduct.total * discountedPricePercentage
   );
-}
+};
 
-function recalculateCartTotals(cart: Cart) {
+const recalculateCartTotals = (cart: Cart) => {
   cart.total = cart.products.reduce((acc, item) => acc + item.total, 0);
   cart.discountedTotal = roundUp(
     cart.products.reduce((acc, item) => acc + item.discountedPrice, 0)
@@ -40,46 +39,54 @@ function recalculateCartTotals(cart: Cart) {
   cart.totalQuantity = roundUp(
     cart.products.reduce((acc, item) => acc + item.quantity, 0)
   );
-}
+};
 
 export const useCart = () => {
   const qClient = useQueryClient();
+  const [persistedCart, persistCart] = useLocalStorage<Cart>('cart', {
+    id: 1,
+    userId: Math.floor(Math.random() * 20) + 1,
+    total: 0,
+    discountedTotal: 0,
+    totalProducts: 0,
+    totalQuantity: 0,
+    products: [],
+  });
 
-  const { data: cart } = useQuery<Cart | null>({
-    queryKey: ['cart', cartId],
-    enabled: !!cartId,
-    queryFn: async () => {
-      const currentCart = qClient.getQueryData<Cart | null>(['cart', cartId]);
+  const updateCartValue = useCallback(
+    (value: Cart) => {
+      qClient.setQueryData<Cart>(['cart'], {
+        ...value,
+      });
+      persistCart(value);
+    },
+    [persistCart, qClient]
+  );
 
-      if (currentCart) {
-        return currentCart;
+  const { data: cart } = useQuery<Cart>({
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: ['cart'],
+    notifyOnChangeProps: ['data'],
+    queryFn: () => {
+      const currentCart = qClient.getQueryData<Cart>(['cart']);
+
+      if (persistedCart && (!currentCart || !currentCart.products.length)) {
+        return persistedCart;
       }
 
-      // return {
-      //   id: cartId,
-      //   userId: 1,
-      //   total: 0,
-      //   discountedTotal: 0,
-      //   totalProducts: 0,
-      //   totalQuantity: 0,
-      //   products: [],
-      // };
-
-      return fetcher
-        .get<Cart>({ url: `/carts/${cartId}` })
-        .then((res) => res[0] ?? null);
+      return currentCart!;
     },
     staleTime: Infinity,
   });
 
   const { mutate: addToCart } = useMutation({
     mutationFn: async ({ newProduct, quantity }: AddToCartPayload) => {
-      const currentCart = qClient.getQueryData<Cart | null>(['cart', cartId]);
-      if (!currentCart) {
+      // const currentCart = qClient.getQueryData<Cart>(['cart']);
+      if (!cart) {
         return;
       }
 
-      const existingProduct = currentCart.products.find(
+      const existingProduct = cart.products.find(
         (item) => item.id === newProduct.id
       );
 
@@ -99,14 +106,14 @@ export const useCart = () => {
           ),
         };
 
-        currentCart.products.push(newCartItem);
+        cart.products.push(newCartItem);
       }
 
-      recalculateCartTotals(currentCart);
+      recalculateCartTotals(cart);
 
-      qClient.setQueryData<Cart | null>(['cart', cartId], { ...currentCart });
+      updateCartValue(cart);
     },
-    onSuccess: () => qClient.invalidateQueries(['cart', cartId]),
+    onSuccess: () => qClient.invalidateQueries(['cart']),
   });
 
   const { mutate: updateProductQuantity } = useMutation({
@@ -114,62 +121,79 @@ export const useCart = () => {
       productId,
       quantity,
     }: UpdateProductQuantityPayload) => {
-      const currentCart = qClient.getQueryData<Cart | null>(['cart', cartId]);
-      if (!currentCart) {
+      // const currentCart = qClient.getQueryData<Cart>(['cart']);
+      if (!cart) {
         return;
       }
 
-      const product = currentCart.products.find(
-        (item) => item.id === productId
-      );
+      const product = cart.products.find((item) => item.id === productId);
       if (!product) {
         return;
       }
 
       if (quantity === 0) {
-        currentCart.products = currentCart.products.filter(
-          (item) => item.id !== productId
-        );
+        cart.products = cart.products.filter((item) => item.id !== productId);
       } else {
         product.quantity = quantity;
 
         recalculateProductTotals(product);
       }
 
-      recalculateCartTotals(currentCart);
+      recalculateCartTotals(cart);
 
-      qClient.setQueryData<Cart | null>(['cart', cartId], { ...currentCart });
+      updateCartValue(cart);
     },
-    onSuccess: () => qClient.invalidateQueries(['cart', cartId]),
+    onSuccess: () => qClient.invalidateQueries(['cart']),
   });
 
   const { mutate: removeFromCart } = useMutation({
     mutationFn: async (productId: number) => {
-      const currentCart = qClient.getQueryData<Cart | null>(['cart', cartId]);
-      if (!currentCart) {
+      // const currentCart = qClient.getQueryData<Cart>(['cart']);
+      if (!cart) {
         return;
       }
 
-      if (!currentCart.products.map((p) => p.id).includes(productId)) {
+      if (!cart.products.map((p) => p.id).includes(productId)) {
         return;
       }
 
-      currentCart.products = [
-        ...currentCart.products.filter((item) => item.id !== productId),
+      cart.products = [
+        ...cart.products.filter((item) => item.id !== productId),
       ];
 
-      recalculateCartTotals(currentCart);
+      recalculateCartTotals(cart);
 
-      qClient.setQueryData<Cart | null>(['cart', cartId], { ...currentCart });
+      updateCartValue(cart);
     },
-    onSuccess: () => qClient.invalidateQueries(['cart', cartId]),
+    onSuccess: () => qClient.invalidateQueries(['cart']),
   });
 
-  return {
-    cart,
+  const { mutate: clearCart } = useMutation({
+    mutationFn: async () => {
+      // const currentCart = qClient.getQueryData<Cart>(['cart']);
+      if (!cart) {
+        return;
+      }
 
-    addToCart,
-    updateProductQuantity,
-    removeFromCart,
-  };
+      cart.products.length = 0;
+
+      recalculateCartTotals(cart);
+
+      updateCartValue(cart);
+    },
+    onSuccess: () => qClient.invalidateQueries(['cart']),
+  });
+
+  return useMemo(
+    () => ({
+      cart,
+
+      addToCart,
+      updateProductQuantity,
+
+      removeFromCart,
+      clearCart,
+    }),
+    [addToCart, cart, clearCart, removeFromCart, updateProductQuantity]
+  );
 };

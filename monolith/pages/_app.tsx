@@ -9,17 +9,13 @@ import { useState } from 'react';
 
 import '../styles/globals.css';
 
-const STALE_TIME = 30_000; // in milliseconds
-const RETRY = 3;
-
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: STALE_TIME,
-            retry: RETRY,
+            staleTime: 30_000, // in milliseconds
           },
         },
       })
