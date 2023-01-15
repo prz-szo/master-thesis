@@ -110,7 +110,7 @@ const SingleProductPage = () => {
         <title>{title}</title>
       </Head>
 
-      <section className="mt-32 flex h-fit flex-col gap-24 py-4 px-4 md:px-8">
+      <section className="my-32 flex h-fit flex-col py-4 px-4 md:px-8">
         <div className=" flex w-full flex-col items-center justify-between gap-20 md:flex-row md:items-start">
           <div className="relative h-72 w-96 rounded-lg border-0 object-cover">
             <Image
@@ -160,9 +160,9 @@ const SingleProductPage = () => {
             </div>
           </div>
         </div>
-
-        <RecommendationsList items={categoryProducts} />
       </section>
+
+      <RecommendationsList items={categoryProducts} />
     </>
   );
 };

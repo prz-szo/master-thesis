@@ -41,7 +41,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
   const { title, price, thumbnail, id, rating, discountPercentage } = product;
 
   return (
-    <div className="flex w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-slate-50 text-neutral-900 shadow-lg md:w-60 lg:transition lg:duration-300 lg:ease-in-out lg:hover:scale-105">
+    <div className="flex min-h-[420px] w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-slate-50 text-neutral-900 shadow-lg md:w-60 lg:transition lg:duration-300 lg:ease-in-out lg:hover:scale-105">
       <Link href={`/products/${id}`}>
         <div className="relative h-40 w-full">
           <Image
@@ -53,10 +53,11 @@ export const ProductCard = ({ product }: { product: Product }) => {
           />
         </div>
       </Link>
-      <div className="flex flex-col items-center justify-end gap-4 px-3 py-3">
+
+      <div className="flex flex-1 flex-col items-center justify-between gap-4 px-3 py-3">
         <Link
           href={`/products/${id}`}
-          className="flex w-full flex-col items-center justify-end gap-2"
+          className="flex w-full flex-1 flex-col items-center gap-2 self-start"
         >
           <h4 className="text-center text-xl font-medium hover:text-amber-400 ">
             {title}
