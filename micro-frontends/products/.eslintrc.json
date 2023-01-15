@@ -1,0 +1,18 @@
+{
+  "plugins": ["@typescript-eslint", "@tanstack/query"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
+    "next/core-web-vitals",
+    "prettier"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest": true
+  },
+  "globals": {
+    "React": "readonly",
+    "JSX": "readonly"
+  }
+}

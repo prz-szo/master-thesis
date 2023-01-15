@@ -1,16 +1,8 @@
 import { Button, HStack, Input, useNumberInput } from '@chakra-ui/react';
 import { formatCurrency } from '@common/utils';
-import { useCart } from '@modules/cart';
 import {
-  CategoriesQueryKey,
-  categoryProductsFetcher,
-  useCategoryProducts,
-} from '@modules/category';
-import {
-  Product,
   productFetcher,
   ProductsQueryKey,
-  RecommendationsList,
   useSingleProduct,
 } from '@modules/product';
 import { QueryClient } from '@tanstack/query-core';
@@ -25,15 +17,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   await queryClient.prefetchQuery(
     [ProductsQueryKey, context.params?.id],
     productFetcher
-  );
-
-  const category = queryClient.getQueryData<Product>([
-    ProductsQueryKey,
-    context.params?.id,
-  ])?.category;
-  await queryClient.prefetchQuery(
-    [CategoriesQueryKey, category],
-    categoryProductsFetcher
   );
 
   return {
@@ -89,9 +72,9 @@ export const QuantityInput = ({
 
 const SingleProductPage = () => {
   const { product } = useSingleProduct();
-  const { categoryProducts } = useCategoryProducts(product?.category);
+  // const { categoryProducts } = useCategoryProducts(product?.category);
 
-  const { addToCart } = useCart();
+  // const { addToCart } = useCart();
   const [quantityCounter, setQuantity] = useState(1);
 
   if (!product) {
@@ -101,7 +84,7 @@ const SingleProductPage = () => {
   const { title, thumbnail, price, discountPercentage, description } = product;
 
   const addToCartHandler = () => {
-    addToCart({ newProduct: product, quantity: quantityCounter });
+    // addToCart({ newProduct: product, quantity: quantityCounter });
   };
 
   return (
@@ -163,7 +146,7 @@ const SingleProductPage = () => {
         </div>
       </section>
 
-      <RecommendationsList items={categoryProducts} />
+      {/*<RecommendationsList items={categoryProducts} />*/}
     </>
   );
 };

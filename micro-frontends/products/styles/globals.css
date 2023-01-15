@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .max-width-layout > *:not(.w-full) {
+    @apply mx-5 max-w-[1280px] self-center sm:mx-0;
+  }
+}
