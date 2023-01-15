@@ -5,7 +5,7 @@ import 'solid-slider/slider.css';
 import { ArrowCarouselIcon } from '../assets';
 import { Product } from '../types';
 import { breakpoints } from './breakpoints';
-import { ProductCard } from './ProductsCard';
+import { ProductCard } from './ProductCard';
 
 export const RecommendationsList: Component<{ items: Product[] }> = ({
   items,
