@@ -1,11 +1,13 @@
-import type { Component } from "solid-js";
+import type { Component } from 'solid-js';
 
-import { RecommendationsList } from "./components";
-import { mockProducts } from "./mockProducts";
+import { RecommendationsList } from './components';
+import { mockProducts } from './mockProducts';
 
-// TODO: Get data from API
 // TODO: Add images
 // TODO: Export as a WebComponent
+
+// Optionals:
+// TODO: Get data from API
 
 const App: Component = () => {
   return <RecommendationsList items={mockProducts} />;

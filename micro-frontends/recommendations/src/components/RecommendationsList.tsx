@@ -1,11 +1,11 @@
-import { Component, For } from "solid-js";
-import { Slider, SliderButton, SliderProvider } from "solid-slider";
+import { Component, For } from 'solid-js';
+import { Slider, SliderButton, SliderProvider } from 'solid-slider';
 
-import "solid-slider/slider.css";
-import { ArrowCarouselIcon } from "../assets";
-import { Product } from "../types";
-import { breakpoints } from "./breakpoints";
-import { ProductCard } from "./ProductsCard";
+import 'solid-slider/slider.css';
+import { ArrowCarouselIcon } from '../assets';
+import { Product } from '../types';
+import { breakpoints } from './breakpoints';
+import { ProductCard } from './ProductsCard';
 
 export const RecommendationsList: Component<{ items: Product[] }> = ({
   items,

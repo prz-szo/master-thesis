@@ -1,1 +1,1 @@
-export * from "./ArrowCarouselIcon";
+export * from './ArrowCarouselIcon';
