@@ -119,7 +119,7 @@ export const RecommendationsList = ({ items }: { items: Product[] }) => {
         <div className="relative w-full">
           <div ref={sliderRef} className="keen-slider">
             {items.map((el) => (
-              <div key={el.id} className="keen-slider__slide p-6">
+              <div key={el.id} className="keen-slider__slide p-8">
                 <ProductCard product={el} />
               </div>
             ))}

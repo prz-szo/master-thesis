@@ -19,7 +19,6 @@
       "@common/*": ["./common/*"],
       "@modules/*": ["./modules/*"],
       "@public/*": ["./public/*"],
-      "@storefront/*": ["./storefront/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

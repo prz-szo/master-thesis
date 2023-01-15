@@ -1,9 +1,14 @@
 import type { Component } from "solid-js";
 
+import { RecommendationsList } from "./components";
+import { mockProducts } from "./mockProducts";
+
+// TODO: Get data from API
+// TODO: Add images
+// TODO: Export as a WebComponent
+
 const App: Component = () => {
-  return (
-    <p class="py-20 text-center text-4xl text-green-700">Hello tailwind!</p>
-  );
+  return <RecommendationsList items={mockProducts} />;
 };
 
 export default App;
