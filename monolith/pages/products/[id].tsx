@@ -27,12 +27,12 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     productFetcher
   );
 
-  const category = queryClient.getQueryData<Product>([
+  const productCategory = queryClient.getQueryData<Product>([
     ProductsQueryKey,
     context.params?.id,
   ])?.category;
   await queryClient.prefetchQuery(
-    [CategoriesQueryKey, category],
+    [CategoriesQueryKey, productCategory],
     categoryProductsFetcher
   );
 

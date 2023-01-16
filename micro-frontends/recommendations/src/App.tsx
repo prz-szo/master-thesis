@@ -1,13 +1,18 @@
-import type { Component } from 'solid-js';
+import { QueryClient, QueryClientProvider } from '@tanstack/solid-query';
 
+import type { Component } from 'solid-js';
 import { RecommendationsList } from './components';
-import { mockProducts } from './mockProducts';
+
+const queryClient = new QueryClient();
 
 // TODO: Export as a WebComponent
-// TODO: API Call to get recommendations
 
 const App: Component = () => {
-  return <RecommendationsList items={mockProducts} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RecommendationsList productId={1} />
+    </QueryClientProvider>
+  );
 };
 
 export default App;

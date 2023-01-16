@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@tanstack/solid-query': ^4.22.0
   autoprefixer: ^10.4.13
   postcss: ^8.4.20
   prettier: ^2.8.3
@@ -13,6 +14,7 @@ specifiers:
   vite-plugin-solid: ^2.5.0
 
 dependencies:
+  '@tanstack/solid-query': 4.22.0_solid-js@1.6.6
   solid-js: 1.6.6
   solid-slider: 1.3.12
 
@@ -613,6 +615,19 @@ packages:
     peerDependencies:
       solid-js: ^1.6.0
     dependencies:
+      solid-js: 1.6.6
+    dev: false
+
+  /@tanstack/query-core/4.22.0:
+    resolution: {integrity: sha512-OeLyBKBQoT265f5G9biReijeP8mBxNFwY7ZUu1dKL+YzqpG5q5z7J/N1eT8aWyKuhyDTiUHuKm5l+oIVzbtrjw==}
+    dev: false
+
+  /@tanstack/solid-query/4.22.0_solid-js@1.6.6:
+    resolution: {integrity: sha512-xNS9tS1XGAY1CD2i6+Lo31wFbizMPPO+NfT3E1E8EFq4Y6t2ewrcEI43X7Wl9mKrntWfLLD75KvnK5LWDhpCiw==}
+    peerDependencies:
+      solid-js: ^1.5.7
+    dependencies:
+      '@tanstack/query-core': 4.22.0
       solid-js: 1.6.6
     dev: false
 

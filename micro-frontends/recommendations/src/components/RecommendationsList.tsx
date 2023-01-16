@@ -1,15 +1,38 @@
+import { createQuery, QueryFunction } from '@tanstack/solid-query';
 import { Component, For } from 'solid-js';
 import { Slider, SliderButton, SliderProvider } from 'solid-slider';
 
 import 'solid-slider/slider.css';
 import { ArrowCarouselIcon } from '../assets';
 import { Product } from '../types';
+import { fetcher } from '../utils';
 import { breakpoints } from './breakpoints';
 import { ProductCard } from './ProductCard';
 
-export const RecommendationsList: Component<{ items: Product[] }> = ({
-  items,
+export const recosFetcher: QueryFunction<Product[]> = ({ queryKey }) =>
+  fetcher
+    .get<Pick<Product, 'id' | 'category'>>({
+      url: `/products/${queryKey[1]}?select=id,category`,
+    })
+    .then((res) => res[0] ?? { category: '' })
+    .then(({ category }) =>
+      fetcher.get<{ products: Product[] }>({
+        url: `/products/category/${category}`,
+      })
+    )
+    .then((res) => res[0]?.products ?? []);
+
+export const RecommendationsList: Component<{ productId: Product['id'] }> = ({
+  productId,
 }) => {
+  const query = createQuery(
+    () => ['recommendations', productId],
+    recosFetcher,
+    {
+      staleTime: Infinity,
+    }
+  );
+
   return (
     <div class="flex w-full max-w-[2200px] flex-col gap-6 self-center">
       <h4 class="ml-4 w-fit rounded-md px-4 py-1 text-3xl font-semibold drop-shadow-sm">
@@ -19,7 +42,7 @@ export const RecommendationsList: Component<{ items: Product[] }> = ({
       <SliderProvider>
         <div class="relative h-auto">
           <Slider options={{ breakpoints, slides: { perView: 1, spacing: 5 } }}>
-            <For each={items}>
+            <For each={query.data}>
               {(item) => (
                 <div class="p-8">
                   <ProductCard {...item} />
