@@ -1,10 +1,39 @@
 import { Button, useToast } from '@chakra-ui/react';
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { NavMain } from './NavMain';
+
+// Augment the global window object with a custom event.
+// As for now lib.dom.d.ts doesn't have a possibility to add event listeners for custom events.
+const AddToCartCustomEventName = 'cart-old:item_added';
+interface AddToCartCustomEventPayload {
+  id: number;
+  quantity?: number;
+}
+interface AddToCartCustomEvent
+  extends CustomEvent<AddToCartCustomEventPayload> {
+  name: typeof AddToCartCustomEventName;
+}
+declare global {
+  interface WindowEventMap {
+    [AddToCartCustomEventName]: AddToCartCustomEvent;
+  }
+}
 
 export const Header = () => {
   const toast = useToast();
-  // const { cart } = useCart();
+
+  useEffect(() => {
+    const listener = (event: AddToCartCustomEvent) => {
+      console.log(event);
+    };
+
+    window.addEventListener('cart-old:item_added', listener);
+
+    return () => {
+      window.removeEventListener('cart-old:item_added', listener);
+    };
+  }, []);
 
   return (
     <header className="drop-shadow-header fixed top-0 left-0 right-0 z-20 flex items-center justify-between gap-10 bg-neutral-800 py-4 px-10 font-medium text-slate-50 backdrop-blur  md:justify-start">
