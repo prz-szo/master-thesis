@@ -1,27 +1,20 @@
 import { HeroSection } from '@common/components';
-import fetcher from '@common/utils/fetcher';
 import { Product } from '@modules/category';
 import Head from 'next/head';
+import Script from 'next/script';
 
 export async function getServerSideProps() {
-  const randomSkip = Math.floor(Math.random() * 100) + 1;
-  const products = await fetcher
-    .get<{ products: Product[] }>({
-      url: `/products?limit=18&skip=${randomSkip}`,
-    })
-    .then((res) => res[0]?.products ?? []);
-
   return {
     props: {
-      featuredProducts: products,
+      randomProductId: Math.floor(Math.random() * 100) + 1,
     },
   };
 }
 
 export default function Home({
-  featuredProducts,
+  randomProductId,
 }: {
-  featuredProducts: Product[];
+  randomProductId: Product['id'];
 }) {
   return (
     <>
@@ -32,8 +25,14 @@ export default function Home({
       </Head>
 
       <HeroSection />
-      {/* TODO: Add Recommendations WC list */}
-      {/*<RecommendationsList items={featuredProducts} />*/}
+
+      <div className="w-full border-4 border-dotted border-teal-700">
+        <recommendations-list
+          product-id={randomProductId}
+        ></recommendations-list>
+      </div>
+
+      <Script src={`${process.env.NEXT_PUBLIC_RECOS_URL}`} type="module" />
     </>
   );
 }

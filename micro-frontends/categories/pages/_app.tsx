@@ -10,6 +10,18 @@ import { useState } from 'react';
 
 import '../styles/globals.css';
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace JSX {
+    interface IntrinsicElements {
+      'recommendations-list': React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      >;
+    }
+  }
+}
+
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(
     () =>

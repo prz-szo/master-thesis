@@ -11,7 +11,7 @@ const extensions = ['.ts', '.tsx'];
 export default {
   input: './src/App.tsx',
   output: {
-    file: 'dist/widget.mjs',
+    file: 'dist/mfe-recos/assets/widget.mjs',
     format: 'es',
   },
   external: [],

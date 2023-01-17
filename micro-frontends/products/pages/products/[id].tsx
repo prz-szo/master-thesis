@@ -10,6 +10,7 @@ import { dehydrate } from '@tanstack/react-query';
 import { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import Script from 'next/script';
 import { useState } from 'react';
 
 export async function getStaticProps(context: GetStaticPropsContext) {
@@ -81,7 +82,8 @@ const SingleProductPage = () => {
     return <div>Loading...</div>;
   }
 
-  const { title, thumbnail, price, discountPercentage, description } = product;
+  const { title, thumbnail, price, discountPercentage, description, id } =
+    product;
 
   const addToCartHandler = () => {
     // addToCart({ newProduct: product, quantity: quantityCounter });
@@ -146,8 +148,11 @@ const SingleProductPage = () => {
         </div>
       </section>
 
-      {/* TODO: Add Recommendations WC list */}
-      {/*<RecommendationsList items={categoryProducts} />*/}
+      <div className="w-full border-4 border-dotted border-teal-700">
+        <recommendations-list product-id={id}></recommendations-list>
+      </div>
+
+      <Script src={`${process.env.NEXT_PUBLIC_RECOS_URL}`} type="module" />
     </>
   );
 };
