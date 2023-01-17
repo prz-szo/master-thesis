@@ -1,11 +1,9 @@
 import { Button, useToast } from '@chakra-ui/react';
-import { CartDrawer, useCart } from '@modules/cart';
 import Link from 'next/link';
 import { NavMain } from './NavMain';
 
 export const Header = () => {
   const toast = useToast();
-  const { cart } = useCart();
 
   return (
     <header className="drop-shadow-header fixed top-0 left-0 right-0 z-20 flex items-center justify-between gap-10 bg-neutral-800 py-4 px-10 font-medium text-slate-50 backdrop-blur  md:justify-start">
@@ -20,12 +18,14 @@ export const Header = () => {
 
         <ul className="flex items-center gap-8">
           <li className="relative">
-            <CartDrawer />
+            {/* TODO: Add CartDrawer MFE */}
+            {/*<CartDrawer />*/}
+            <div className="h-7 w-7 fill-amber-500 transition-all duration-300 hover:fill-amber-400">
+              ╳
+            </div>
 
             <span className="items absolute -bottom-2 -right-3 box-content flex h-5 w-5 items-center justify-center rounded-full border-2 border-amber-500 bg-slate-50 text-slate-900">
-              <span className="text-xs transition-all duration-300">
-                {cart?.totalQuantity ?? 0}
-              </span>
+              <span className="text-xs transition-all duration-300">{0}</span>
             </span>
           </li>
 

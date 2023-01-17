@@ -1,7 +1,7 @@
-import { Cart, CartItem, Product } from '@modules/cart';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
+import { Cart, CartItem, Product } from '../types';
 
 const roundUp = (num: number, precision = 2) => {
   const factor = 10 ** precision;
@@ -63,7 +63,6 @@ export const useCart = () => {
   );
 
   const { data: cart } = useQuery<Cart>({
-    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: ['cart'],
     notifyOnChangeProps: ['data'],
     queryFn: () => {

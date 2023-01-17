@@ -1,4 +1,5 @@
 import {
+  ChakraProvider,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -9,28 +10,70 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { ArrowBtn, OutlineBtn } from '@common/components';
-import { formatCurrency } from '@common/utils';
-import { CartItemCard, useCart } from '@modules/cart';
-import CartIcon from '../../../common/assets/CartIcon';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useCallback, useEffect } from 'react';
+import { CartIcon } from '../assets';
+import { useCart } from '../hooks';
+import { formatCurrency } from '../utils';
+import { ArrowBtn, OutlineBtn } from './Buttons';
+import { CartItemCard } from './CartItem';
 
-export const CartDrawer = () => {
+const queryClient = new QueryClient();
+
+// Augment the global window object with a custom event.
+// As for now lib.dom.d.ts doesn't have a possibility to add event listeners for custom events.
+const AddToCartCustomEventName = 'cart:item_added';
+interface AddToCartCustomEventPayload {
+  id: number;
+  quantity?: number;
+}
+interface AddToCartCustomEvent
+  extends CustomEvent<AddToCartCustomEventPayload> {
+  name: typeof AddToCartCustomEventName;
+}
+declare global {
+  interface WindowEventMap {
+    [AddToCartCustomEventName]: AddToCartCustomEvent;
+  }
+}
+
+const CartDrawer = () => {
   const toast = useToast();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const { cart, clearCart } = useCart();
 
-  const clearCartHandler = () => {
+  const clearCartHandler = useCallback(() => {
     clearCart();
-  };
+  }, [clearCart]);
+
+  useEffect(() => {
+    const listener = (event: AddToCartCustomEvent) => {
+      console.log(event);
+    };
+
+    window.addEventListener('cart:item_added', listener);
+
+    return () => {
+      window.removeEventListener('cart:item_added', listener);
+    };
+  }, []);
 
   return (
     <>
-      <button disabled={!cart} onClick={onToggle}>
-        <div className="h-7 w-7">
-          <CartIcon className="fill-amber-500 transition-all duration-300 hover:fill-amber-400" />
-        </div>
-      </button>
+      <div className="relative h-7 w-7">
+        <button disabled={!cart} onClick={onToggle}>
+          <div className="h-7 w-7">
+            <CartIcon className="fill-amber-500 transition-all duration-300 hover:fill-amber-400" />
+          </div>
+        </button>
+
+        <span className="items absolute -bottom-2 -right-3 box-content flex h-5 w-5 items-center justify-center rounded-full border-2 border-amber-500 bg-slate-50 text-slate-900">
+          <span className="text-xs transition-all duration-300">
+            {cart?.totalQuantity ?? 0}
+          </span>
+        </span>
+      </div>
 
       <Drawer isOpen={isOpen} placement="right" size="lg" onClose={onClose}>
         <DrawerOverlay />
@@ -97,3 +140,13 @@ export const CartDrawer = () => {
     </>
   );
 };
+
+const CartDrawerParent = () => (
+  <QueryClientProvider client={queryClient}>
+    <ChakraProvider>
+      <CartDrawer />
+    </ChakraProvider>
+  </QueryClientProvider>
+);
+
+export { CartDrawerParent as CartDrawer };

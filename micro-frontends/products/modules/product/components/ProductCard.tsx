@@ -67,6 +67,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
           <Rating value={rating} itemStyles={RatingStyles} readOnly />
         </div>
 
+        {/* TODO: Should be replace with the add-to-cart-button Web Component */}
         <AddToCartButton id={product.id} />
       </div>
     </div>

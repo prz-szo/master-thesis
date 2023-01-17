@@ -6,12 +6,13 @@ interface AddToCartButtonProps {
   quantity?: number;
 }
 
+// TODO: Should be removed and replaced with a web component version
 export const AddToCartButton = ({ id, quantity }: AddToCartButtonProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   const clickHandler = useCallback(() => {
     ref.current!.dispatchEvent(
-      new CustomEvent('cart-old:item_added', {
+      new CustomEvent('cart:item_added', {
         bubbles: true,
         detail: { id, quantity: quantity ?? 1 },
       })

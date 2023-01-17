@@ -1,8 +1,21 @@
 import fetcher from '@common/utils/fetcher';
-import { Product } from '@modules/cart';
 import { CategoriesQueryKey } from '@modules/category';
 import { QueryFunction, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+
+export interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  discountPercentage: number;
+  rating: number;
+  stock: number;
+  brand: string;
+  category: string;
+  thumbnail: string;
+  images: string[];
+}
 
 export const categoryProductsFetcher: QueryFunction<Product[]> = ({
   queryKey,

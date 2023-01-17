@@ -56,6 +56,7 @@ const SingleCategoryPage = () => {
 
           <div className="grid auto-cols-max grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {categoryProducts.map((el) => (
+              // TODO: Add ProductCard MFE
               <div key={el.id}>{JSON.stringify(el, null, 4)}</div>
             ))}
           </div>

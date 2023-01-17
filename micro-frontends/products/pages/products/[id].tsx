@@ -146,6 +146,7 @@ const SingleProductPage = () => {
         </div>
       </section>
 
+      {/* TODO: Add Recommendations WC list */}
       {/*<RecommendationsList items={categoryProducts} />*/}
     </>
   );

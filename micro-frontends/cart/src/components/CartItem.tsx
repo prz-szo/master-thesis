@@ -5,10 +5,10 @@ import {
   NumberInputField,
   NumberInputStepper,
 } from '@chakra-ui/react';
-import CrossIcon from '@common/assets/CrossIcon';
-import { formatCurrency } from '@common/utils';
-import { CartItem, useCart } from '@modules/cart';
-import Image from 'next/image';
+import { CrossIcon } from '../assets';
+import { useCart } from '../hooks';
+import { CartItem } from '../types';
+import { formatCurrency } from '../utils';
 
 export const CartItemCard = ({
   quantity,
@@ -24,14 +24,14 @@ export const CartItemCard = ({
   return (
     <div className="flex min-h-[8rem] w-full items-center justify-between gap-6 rounded-lg p-4 shadow-md">
       <div className="relative h-24 w-24 flex-none">
-        <Image
+        <img
+          sizes={'(min-width: 768px) 15rem, 100vw'}
           src={
             thumbnail ??
             `https://i.dummyjson.com/data/products/${id}/thumbnail.jpg`
           }
-          className="rounded-lg border border-neutral-400/50 object-cover"
+          className="absolute left-0 top-0 right-0 bottom-0 h-full w-full rounded-lg border border-neutral-400/50 object-cover"
           alt={title}
-          fill
         />
       </div>
 

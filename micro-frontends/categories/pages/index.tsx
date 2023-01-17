@@ -1,6 +1,6 @@
 import { HeroSection } from '@common/components';
 import fetcher from '@common/utils/fetcher';
-import { Product } from '@modules/cart';
+import { Product } from '@modules/category';
 import Head from 'next/head';
 
 export async function getServerSideProps() {
@@ -32,6 +32,7 @@ export default function Home({
       </Head>
 
       <HeroSection />
+      {/* TODO: Add Recommendations WC list */}
       {/*<RecommendationsList items={featuredProducts} />*/}
     </>
   );
