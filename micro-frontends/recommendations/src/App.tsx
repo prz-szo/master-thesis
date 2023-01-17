@@ -1,18 +1,25 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/solid-query';
-
+import { customElement } from 'solid-element';
 import type { Component } from 'solid-js';
+
 import { RecommendationsList } from './components';
+
+import './index.css';
+
+import { Product } from './types';
 
 const queryClient = new QueryClient();
 
-// TODO: Export as a WebComponent
+export const WebComponentTagName = 'recommendations-list';
 
-const App: Component = () => {
+const App: Component<{ productId: Product['id'] }> = (props) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <RecommendationsList productId={1} />
+      <RecommendationsList productId={props.productId} />
     </QueryClientProvider>
   );
 };
+
+customElement(WebComponentTagName, { productId: 0 }, App);
 
 export default App;

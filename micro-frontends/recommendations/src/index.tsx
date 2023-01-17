@@ -1,7 +1,10 @@
 /* @refresh reload */
-import './index.css';
 import { render } from 'solid-js/web';
 
 import App from './App';
+import './index.css';
 
-render(() => <App />, document.getElementById('root') as HTMLElement);
+render(
+  () => <App productId={2} />,
+  document.getElementById('root') as HTMLElement
+);

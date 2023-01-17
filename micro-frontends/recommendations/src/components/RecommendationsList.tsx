@@ -22,29 +22,54 @@ export const recosFetcher: QueryFunction<Product[]> = ({ queryKey }) =>
     )
     .then((res) => res[0]?.products ?? []);
 
-export const RecommendationsList: Component<{ productId: Product['id'] }> = ({
-  productId,
-}) => {
+export const RecommendationsList: Component<{ productId: Product['id'] }> = (
+  props
+) => {
   const query = createQuery(
-    () => ['recommendations', productId],
+    () => ['recommendations', props.productId],
     recosFetcher,
     {
       staleTime: Infinity,
+      enabled: !!props.productId,
     }
   );
 
   return (
-    <div class="flex w-full max-w-[2200px] flex-col gap-6 self-center">
-      <h4 class="ml-4 w-fit rounded-md px-4 py-1 text-3xl font-semibold drop-shadow-sm">
+    <div
+      style={{
+        width: '100%',
+        'max-width': '2200px',
+        display: 'flex',
+        'flex-direction': 'column',
+        gap: '1.5rem',
+        'align-self': 'center',
+      }}
+    >
+      <h4
+        style={{
+          'font-size': '1.875rem',
+          'line-height': '2.25rem',
+          'margin-left': '1rem',
+          'border-radius': '0.375rem',
+          width: 'fit-content',
+          padding: '0.25rem 1rem',
+          'font-weight': '600',
+        }}
+      >
         Featured Products
       </h4>
 
       <SliderProvider>
-        <div class="relative h-auto">
+        <div
+          style={{
+            position: 'relative',
+            height: 'auto',
+          }}
+        >
           <Slider options={{ breakpoints, slides: { perView: 1, spacing: 5 } }}>
             <For each={query.data}>
               {(item) => (
-                <div class="p-8">
+                <div style={{ padding: '2rem' }}>
                   <ProductCard {...item} />
                 </div>
               )}
