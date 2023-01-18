@@ -8,7 +8,7 @@
     "bundle:widget": "rollup --config rollup.config.mjs",
     "serve": "vite preview",
     "predeploy": "pnpm build && pnpm bundle:widget",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -a -d dist"
   },
   "license": "MIT",
   "homepage": "/master-thesis/micro-frontends/recommendations/",
