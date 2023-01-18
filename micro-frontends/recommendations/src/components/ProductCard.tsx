@@ -32,6 +32,18 @@ export const PriceBox = ({
 };
 
 export const ProductCard: Component<Product> = (props) => {
+  const clickHandler = () => {
+    dispatchEvent(
+      new CustomEvent('cart:item_added', {
+        bubbles: true,
+        detail: {
+          productId: props.id,
+          quantity: 1,
+        },
+      })
+    );
+  };
+
   return (
     <div class="flex min-h-[420px] w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-slate-50 text-neutral-900 shadow-lg md:w-60 lg:transition lg:duration-300 lg:ease-in-out lg:hover:scale-105">
       {/* TODO: Change to emit CustomEvent */}
@@ -73,7 +85,7 @@ export const ProductCard: Component<Product> = (props) => {
         <div class="w-full">
           <button
             class="h-12 w-full rounded-lg bg-teal-600 font-bold text-white transition-colors duration-300 hover:bg-teal-700 active:bg-teal-800"
-            // onClick={() => addToCart({ newProduct: product, quantity: 1 })}
+            onClick={clickHandler}
           >
             Add to Cart
           </button>
