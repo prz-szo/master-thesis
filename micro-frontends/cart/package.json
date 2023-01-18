@@ -2,6 +2,12 @@
   "name": "cart",
   "version": "1.0.0",
   "homepage": "./",
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
   "dependencies": {
     "@chakra-ui/react": "^2.4.8",
     "@emotion/react": "^11.10.5",
@@ -21,12 +27,6 @@
     "bundle:widget": "rollup --config rollup.config.mjs",
     "deploy": "gh-pages -a -d dist",
     "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [

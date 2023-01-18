@@ -4,7 +4,6 @@ import '@smastrom/react-rating/style.css';
 import { QueryClient } from '@tanstack/query-core';
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import 'keen-slider/keen-slider.min.css';
 import { AppProps } from 'next/app';
 import { useState } from 'react';
 
