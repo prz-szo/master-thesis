@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/solid-query';
 import { customElement } from 'solid-element';
 import type { Component } from 'solid-js';
 
-import { RecommendationsList } from './components';
+import { RecommendationsList, Styles } from './components';
 
 import './index.css';
 
@@ -14,9 +14,12 @@ export const WebComponentTagName = 'recommendations-list';
 
 const App: Component<{ productId: Product['id'] }> = (props) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RecommendationsList productId={props.productId} />
-    </QueryClientProvider>
+    <>
+      <QueryClientProvider client={queryClient}>
+        <RecommendationsList productId={props.productId} />
+      </QueryClientProvider>
+      <Styles />
+    </>
   );
 };
 

@@ -8,7 +8,7 @@ import { Product } from '../types';
 import { fetcher } from '../utils';
 import { breakpoints } from './breakpoints';
 import { ProductCard } from './ProductCard';
-import { globalStyles, Styles } from './Styles';
+import { globalStyles } from './Styles';
 
 export const recosFetcher: QueryFunction<Product[]> = ({ queryKey }) =>
   fetcher
@@ -37,7 +37,6 @@ export const RecommendationsList: Component<{ productId: Product['id'] }> = (
 
   return (
     <>
-      <Styles />
       <div
         class="flex w-full flex-col gap-6 self-center"
         style={{ 'max-width': '2000px', ...globalStyles }}
