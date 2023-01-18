@@ -6,7 +6,6 @@ interface AddToCartButtonProps {
   quantity?: number;
 }
 
-// TODO: Should be removed and replaced with a web component version
 export const AddToCartButton = ({ id, quantity }: AddToCartButtonProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
 

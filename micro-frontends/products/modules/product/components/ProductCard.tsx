@@ -1,6 +1,5 @@
 import { formatCurrency } from '@common/utils';
 import { Product, RatingStyles } from '@modules/product';
-import { AddToCartButton } from '@modules/product/components/AddToCartButton';
 import { Rating } from '@smastrom/react-rating';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -67,8 +66,11 @@ export const ProductCard = ({ product }: { product: Product }) => {
           <Rating value={rating} itemStyles={RatingStyles} readOnly />
         </div>
 
-        {/* TODO: Should be replace with the add-to-cart-button Web Component */}
-        <AddToCartButton id={product.id} />
+        <div className="w-full border-4 border-dotted border-teal-700">
+          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+          {/* @ts-ignore */}
+          <add-to-cart-btn product-id={product.id}></add-to-cart-btn>
+        </div>
       </div>
     </div>
   );

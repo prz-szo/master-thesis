@@ -3,21 +3,27 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useRef } from 'react';
 
 interface AddToCartButtonProps {
-  id: number;
+  productId: number;
   quantity?: number;
 }
 
-export const AddToCartButton = ({ id, quantity }: AddToCartButtonProps) => {
+export const AddToCartButton = ({
+  productId,
+  quantity,
+}: AddToCartButtonProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   const clickHandler = useCallback(() => {
     ref.current!.dispatchEvent(
       new CustomEvent('cart:item_added', {
         bubbles: true,
-        detail: { id, quantity: quantity ?? 1 },
+        detail: {
+          productId: Number(productId),
+          quantity: Number(quantity ?? 1),
+        },
       })
     );
-  }, [id, quantity]);
+  }, [productId, quantity]);
 
   return (
     <ChakraProvider>
@@ -36,6 +42,6 @@ export const AddToCartButton = ({ id, quantity }: AddToCartButtonProps) => {
 };
 
 AddToCartButton.propTypes = {
-  id: PropTypes.number.isRequired,
+  productId: PropTypes.number.isRequired,
   quantity: PropTypes.number,
 };

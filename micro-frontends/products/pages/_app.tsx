@@ -18,6 +18,10 @@ declare global {
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
       >;
+      'add-to-cart-btn': React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>,
+        HTMLElement
+      >;
     }
   }
 }

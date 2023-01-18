@@ -8,6 +8,7 @@ import {
 import { QueryClient } from '@tanstack/query-core';
 import { dehydrate } from '@tanstack/react-query';
 import Head from 'next/head';
+import Script from 'next/script';
 
 export async function getStaticProps() {
   const queryClient = new QueryClient();
@@ -42,6 +43,8 @@ const AllProductsPage = () => {
           {isLoading ? <Spinner /> : null}
         </div>
       </section>
+
+      <Script src={`${process.env.NEXT_PUBLIC_CART_URL}`} type="module" />
     </>
   );
 };

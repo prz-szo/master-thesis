@@ -10,7 +10,13 @@ function App() {
       <div className="m-auto flex max-w-xl flex-col justify-center gap-6 p-6">
         <div>
           <label>Add to Cart button</label>
-          <AddToCartButton id={1} quantity={2} />
+          <AddToCartButton productId={1} quantity={2} />
+        </div>
+
+        <div className="w-full border-4 border-dotted border-teal-700">
+          <label>Add to Cart button (Web Component)</label>
+          {/* @ts-ignore */}
+          <add-to-cart-btn product-id="1" quantity="5"></add-to-cart-btn>
         </div>
 
         <div>
