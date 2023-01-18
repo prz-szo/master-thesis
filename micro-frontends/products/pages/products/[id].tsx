@@ -73,9 +73,6 @@ export const QuantityInput = ({
 
 const SingleProductPage = () => {
   const { product } = useSingleProduct();
-  // const { categoryProducts } = useCategoryProducts(product?.category);
-
-  // const { addToCart } = useCart();
   const [quantityCounter, setQuantity] = useState(1);
 
   if (!product) {
@@ -84,10 +81,6 @@ const SingleProductPage = () => {
 
   const { title, thumbnail, price, discountPercentage, description, id } =
     product;
-
-  const addToCartHandler = () => {
-    // addToCart({ newProduct: product, quantity: quantityCounter });
-  };
 
   return (
     <>
@@ -140,9 +133,15 @@ const SingleProductPage = () => {
                 <QuantityInput value={quantityCounter} onChange={setQuantity} />
               </div>
 
-              <Button h={70} size="lg" onClick={addToCartHandler}>
-                Add to Cart
-              </Button>
+              <div className="w-40 border-4 border-dotted border-teal-700">
+                {/* Possible to consume that component using ModuleFederation */}
+                <add-to-cart-btn
+                  product-id={product.id}
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  quantity={quantityCounter}
+                ></add-to-cart-btn>
+              </div>
             </div>
           </div>
         </div>
@@ -153,6 +152,7 @@ const SingleProductPage = () => {
       </div>
 
       <Script src={`${process.env.NEXT_PUBLIC_RECOS_URL}`} type="module" />
+      <Script src={`${process.env.NEXT_PUBLIC_CART_URL}`} type="module" />
     </>
   );
 };
