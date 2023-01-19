@@ -6,36 +6,30 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   poweredByHeader: false,
-  // basePath: '/products',
   eslint: {
     dirs: ['pages', 'common', 'modules', 'styles'],
   },
   images: {
     domains: ['images.unsplash.com', 'i.dummyjson.com', 'loremflickr.com'],
   },
-  redirects: async () => [
-    {
-      source: '/categories/:path*',
-      destination: `${process.env.NEXT_PUBLIC_CATEGORIES_HOST}/categories/:path*`,
-      permanent: true,
-    },
-  ],
-  webpack(config, options) {
+  webpack(config) {
     Object.assign(config.experiments, { topLevelAwait: true });
-
-    const { isServer } = options;
-    const suffix = `_next/static/${isServer ? 'ssr' : 'chunks'}/remoteEntry.js`;
 
     config.plugins.push(
       new NextFederationPlugin({
-        name: 'products',
+        name: 'cart',
         filename: 'static/chunks/remoteEntry.js',
-        remotes: {
-          '@mfe/cart': `cart@${process.env.NEXT_PUBLIC_CART_HOST}/${suffix}`,
-        },
         exposes: {
-          './ProductCard': './modules/product/components/ProductCard',
+          './CartDrawer': './common/components/CartDrawerWrapped',
         },
+        shared: [
+          '@tanstack/react-query',
+          '@tanstack/query-core',
+          '@chakra-ui/react',
+          '@emotion/react',
+          '@emotion/styled',
+          'framer-motion',
+        ],
       })
     );
 

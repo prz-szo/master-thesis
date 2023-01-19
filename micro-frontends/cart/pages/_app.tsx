@@ -1,6 +1,4 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { Layout } from '@common/components';
-
 import '@module-federation/nextjs-mf/src/include-defaults';
 import { QueryClient } from '@tanstack/query-core';
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
@@ -9,18 +7,6 @@ import { AppProps } from 'next/app';
 import { useState } from 'react';
 
 import '../styles/globals.css';
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace JSX {
-    interface IntrinsicElements {
-      'recommendations-list': React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement>,
-        HTMLElement
-      >;
-    }
-  }
-}
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(
@@ -38,9 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <ChakraProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <Component {...pageProps} />
         </ChakraProvider>
       </Hydrate>
 

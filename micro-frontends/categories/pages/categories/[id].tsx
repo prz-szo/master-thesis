@@ -1,4 +1,11 @@
-import { Spinner } from '@chakra-ui/react';
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Box,
+  Spinner,
+} from '@chakra-ui/react';
 import { capitalize } from '@common/utils';
 import {
   categoriesFetcher,
@@ -35,7 +42,17 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 // @ts-ignore
 const ProductCard = dynamic(() => import('@mfe/products/ProductCard'), {
   ssr: false,
-  loading: () => <div>Loading...</div>,
+  loading: () => (
+    <Box
+      width="250px"
+      height="420px"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" size="xl" />
+    </Box>
+  ),
 });
 
 export async function getStaticPaths() {
@@ -45,6 +62,25 @@ export async function getStaticPaths() {
     fallback: true,
   };
 }
+
+const errorFallback = (
+  <Alert
+    status="error"
+    variant="subtle"
+    flexDirection="column"
+    alignItems="center"
+    justifyContent="center"
+    textAlign="center"
+  >
+    <AlertIcon boxSize="40px" mr={0} />
+    <AlertTitle mt={4} mb={1} fontSize="lg">
+      Error: Script failed to load due to infrastructure error.
+    </AlertTitle>
+    <AlertDescription maxWidth="sm">
+      Please try again later or contact support for assistance.
+    </AlertDescription>
+  </Alert>
+);
 
 const SingleCategoryPage = () => {
   const router = useRouter();
@@ -65,7 +101,7 @@ const SingleCategoryPage = () => {
         <div className="flex flex-col items-center justify-center">
           <h2 className="mb-8 text-3xl font-bold">{categoryName}</h2>
 
-          <ErrorBoundary fallback={<h2>Failed to CartDrawer</h2>}>
+          <ErrorBoundary fallback={errorFallback}>
             <div className="grid min-h-[420px] auto-cols-max grid-cols-1 gap-6 border-4 border-dotted border-amber-700 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {categoryProducts.map((product) => (
                 <Fragment key={product.id}>

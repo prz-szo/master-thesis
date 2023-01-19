@@ -1,6 +1,25 @@
-import { Button, useToast } from '@chakra-ui/react';
+import { Alert, AlertIcon, Button, Spinner, useToast } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { ErrorBoundary } from 'react-error-boundary';
 import { NavMain } from './NavMain';
+
+const CartDrawer = dynamic(
+  () =>
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    import('@mfe/cart/CartDrawer'),
+  {
+    ssr: false,
+    loading: () => <Spinner size="md" />,
+  }
+);
+
+const errorFallback = (
+  <Alert status="error" p={1} alignItems="center" justifyContent="center">
+    <AlertIcon mr={0} w={5} h={5} />
+  </Alert>
+);
 
 export const Header = () => {
   const toast = useToast();
@@ -17,16 +36,11 @@ export const Header = () => {
         <NavMain />
 
         <ul className="flex items-center gap-8">
-          <li className="relative">
-            {/* TODO: Add CartDrawer MFE */}
-            {/*<CartDrawer />*/}
-            <div className="h-7 w-7 fill-amber-500 transition-all duration-300 hover:fill-amber-400">
-              ╳
-            </div>
-
-            <span className="items absolute -bottom-2 -right-3 box-content flex h-5 w-5 items-center justify-center rounded-full border-2 border-amber-500 bg-slate-50 text-slate-900">
-              <span className="text-xs transition-all duration-300">{0}</span>
-            </span>
+          <li className="relative border-2 border-dotted border-amber-700 p-2">
+            <ErrorBoundary fallback={errorFallback}>
+              <CartDrawer />
+              <span className="absolute relative -bottom-2 -right-3 bottom-0 left-0 right-0 top-0 box-content flex hidden h-24 h-5 h-7 h-full min-h-[8rem] w-24 w-5 w-7 w-full flex-1 flex-none flex-col items-center justify-center justify-between gap-1 gap-2 gap-6 rounded-full rounded-lg rounded-sm border border-2 border-amber-500 border-neutral-400/50 bg-slate-400 bg-slate-50 fill-amber-500 fill-slate-50 object-cover p-4 text-center text-slate-900 shadow-md transition-all duration-300 hover:bg-amber-500 hover:fill-amber-400"></span>
+            </ErrorBoundary>
           </li>
 
           <li>

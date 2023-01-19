@@ -16,11 +16,19 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@common/*": ["./common/*"],
+      "@modules/*": ["./modules/*"],
+      "@public/*": ["./public/*"],
+    }
   },
-  "include": [
-    "src"
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": [
+    "node_modules"
   ]
 }

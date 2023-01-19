@@ -8,7 +8,7 @@ import typescript from 'rollup-plugin-typescript2';
 const extensions = ['.ts', '.tsx'];
 
 export default {
-  input: './src/components/AddToCartButton/export-to-wc.ts',
+  input: './common/components/AddToCartButton/export-to-wc.ts',
 
   output: {
     file: 'dist/mfe-cart/static/js/widget.mjs',

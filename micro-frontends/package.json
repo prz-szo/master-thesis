@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --names \"CATEGORIES,CART,PRODUCTS\" -c \"bgYellow.black.bold,blue.bold,magenta.bold\" \"cd categories && npm run dev\" \"cd cart && PORT=3002 npm run dev\"  \"cd products && PORT=3001 npm run dev\"",
+    "build": "concurrently --names \"CATEGORIES,CART,PRODUCTS\" -c \"bgYellow.black.bold,blue.bold,magenta.bold\" \"cd categories && npm run build\" \"cd cart && PORT=3002 npm run build\"  \"cd products && PORT=3001 npm run build\"",
+    "start": "concurrently --names \"CATEGORIES,CART,PRODUCTS\" -c \"bgYellow.black.bold,blue.bold,magenta.bold\" \"cd categories && npm start\" \"cd cart && PORT=3002 npm start\"  \"cd products && PORT=3001 npm start\""
+  },
+  "dependencies": {
+    "concurrently": "^7.3.0"
+  }
+}

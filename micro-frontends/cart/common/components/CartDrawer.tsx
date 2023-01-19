@@ -1,5 +1,4 @@
 import {
-  ChakraProvider,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -10,7 +9,6 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
 import { CartIcon } from '../assets';
 import { useCart } from '../hooks';
@@ -18,8 +16,6 @@ import { Product } from '../types';
 import { fetcher, formatCurrency } from '../utils';
 import { ArrowBtn, OutlineBtn } from './Buttons';
 import { CartItemCard } from './CartItem';
-
-const queryClient = new QueryClient();
 
 // Augment the global window object with a custom event.
 // As for now lib.dom.d.ts doesn't have a possibility to add event listeners for custom events.
@@ -38,7 +34,7 @@ declare global {
   }
 }
 
-const CartDrawer = () => {
+export const CartDrawer = () => {
   const toast = useToast();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
@@ -156,15 +152,5 @@ const CartDrawer = () => {
     </>
   );
 };
-
-const CartDrawerParent = () => (
-  <QueryClientProvider client={queryClient}>
-    <ChakraProvider>
-      <CartDrawer />
-    </ChakraProvider>
-  </QueryClientProvider>
-);
-
-export { CartDrawerParent };
 
 export default CartDrawer;
