@@ -1,6 +1,15 @@
 import { Button, useToast } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { ErrorBoundary } from 'react-error-boundary';
 import { NavMain } from './NavMain';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const CartDrawer = dynamic(() => import('@mfe/cart/CartDrawer'), {
+  ssr: false,
+  loading: () => <div>Loading...</div>,
+});
 
 export const Header = () => {
   const toast = useToast();
@@ -18,15 +27,9 @@ export const Header = () => {
 
         <ul className="flex items-center gap-8">
           <li className="relative">
-            {/* TODO: Add CartDrawer MFE */}
-            {/*<CartDrawer />*/}
-            <div className="h-7 w-7 fill-amber-500 transition-all duration-300 hover:fill-amber-400">
-              ╳
-            </div>
-
-            <span className="items absolute -bottom-2 -right-3 box-content flex h-5 w-5 items-center justify-center rounded-full border-2 border-amber-500 bg-slate-50 text-slate-900">
-              <span className="text-xs transition-all duration-300">{0}</span>
-            </span>
+            <ErrorBoundary fallback={<h2>Failed to CartDrawer</h2>}>
+              <CartDrawer />
+            </ErrorBoundary>
           </li>
 
           <li>

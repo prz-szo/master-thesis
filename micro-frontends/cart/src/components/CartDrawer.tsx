@@ -14,7 +14,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
 import { CartIcon } from '../assets';
 import { useCart } from '../hooks';
-import { formatCurrency } from '../utils';
+import { Product } from '../types';
+import { fetcher, formatCurrency } from '../utils';
 import { ArrowBtn, OutlineBtn } from './Buttons';
 import { CartItemCard } from './CartItem';
 
@@ -24,7 +25,7 @@ const queryClient = new QueryClient();
 // As for now lib.dom.d.ts doesn't have a possibility to add event listeners for custom events.
 const AddToCartCustomEventName = 'cart:item_added';
 interface AddToCartCustomEventPayload {
-  id: number;
+  productId: number;
   quantity?: number;
 }
 interface AddToCartCustomEvent
@@ -41,23 +42,38 @@ const CartDrawer = () => {
   const toast = useToast();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const { cart, clearCart } = useCart();
+  const { cart, clearCart, addToCart } = useCart();
 
   const clearCartHandler = useCallback(() => {
     clearCart();
   }, [clearCart]);
 
-  useEffect(() => {
-    const listener = (event: AddToCartCustomEvent) => {
-      console.log(event);
-    };
+  const listener = useCallback(
+    (event: AddToCartCustomEvent) => {
+      if (!event.detail.productId) return;
 
+      fetcher
+        .get<Product>({ url: `/products/${event.detail.productId}` })
+        .then((res) => res[0])
+        .then((product) => {
+          if (!product) return;
+
+          addToCart({
+            newProduct: product,
+            quantity: event.detail.quantity ?? 1,
+          });
+        });
+    },
+    [addToCart]
+  );
+
+  useEffect(() => {
     window.addEventListener('cart:item_added', listener);
 
     return () => {
       window.removeEventListener('cart:item_added', listener);
     };
-  }, []);
+  }, [listener]);
 
   return (
     <>
@@ -149,4 +165,6 @@ const CartDrawerParent = () => (
   </QueryClientProvider>
 );
 
-export { CartDrawerParent as CartDrawer };
+export { CartDrawerParent };
+
+export default CartDrawer;

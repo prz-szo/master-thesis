@@ -1,5 +1,5 @@
 import React from 'react';
-import { AddToCartButton, CartDrawer } from './components';
+import { AddToCartButton, CartDrawerParent } from './components';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <div className="m-auto flex max-w-xl flex-col justify-center gap-6 p-6">
         <div>
           <label>Add to Cart button</label>
-          <AddToCartButton productId={1} quantity={2} />
+          <AddToCartButton productId={89} quantity={2} />
         </div>
 
         <div className="w-full border-4 border-dotted border-teal-700">
@@ -21,7 +21,7 @@ function App() {
 
         <div>
           <label>Cart Drawer</label>
-          <CartDrawer />
+          <CartDrawerParent />
         </div>
       </div>
     </>

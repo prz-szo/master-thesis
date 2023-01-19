@@ -9,8 +9,12 @@ import {
 import { QueryClient } from '@tanstack/query-core';
 import { dehydrate } from '@tanstack/react-query';
 import { GetStaticPropsContext } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
+import { Fragment } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const queryClient = new QueryClient();
@@ -26,6 +30,13 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     },
   };
 }
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const ProductCard = dynamic(() => import('@mfe/products/ProductCard'), {
+  ssr: false,
+  loading: () => <div>Loading...</div>,
+});
 
 export async function getStaticPaths() {
   const categories = await categoriesFetcher();
@@ -54,16 +65,25 @@ const SingleCategoryPage = () => {
         <div className="flex flex-col items-center justify-center">
           <h2 className="mb-8 text-3xl font-bold">{categoryName}</h2>
 
-          <div className="grid auto-cols-max grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {categoryProducts.map((el) => (
-              // TODO: Add ProductCard MFE
-              <div key={el.id}>{JSON.stringify(el, null, 4)}</div>
-            ))}
-          </div>
+          <ErrorBoundary fallback={<h2>Failed to CartDrawer</h2>}>
+            <div className="grid min-h-[420px] auto-cols-max grid-cols-1 gap-6 border-4 border-dotted border-amber-700 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {categoryProducts.map((product) => (
+                <Fragment key={product.id}>
+                  {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                  {/* @ts-ignore */}
+                  <ProductCard product={product} className="h-40" />
+                </Fragment>
+              ))}
+            </div>
+          </ErrorBoundary>
 
           {areProductsLoading ? <Spinner /> : null}
         </div>
       </section>
+
+      <div className="flex hidden min-h-[420px] w-full min-w-[15rem] flex-1 snap-center flex-col flex-col items-center justify-between justify-between gap-4 rounded-lg bg-slate-50 px-3 py-3 text-neutral-900 shadow-lg md:w-60 lg:transition lg:duration-300 lg:ease-in-out lg:hover:scale-105"></div>
+
+      <Script src={`${process.env.NEXT_PUBLIC_CART_URL}`} type="module" />
     </>
   );
 };
