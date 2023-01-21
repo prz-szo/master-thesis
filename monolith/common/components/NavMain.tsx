@@ -7,19 +7,6 @@ export const NavMain = () => {
     <ul className="hidden items-center gap-10 md:flex">
       <li>
         <Link
-          href="/"
-          className={`
-      transition-all duration-300 hover:text-amber-500 active:text-amber-300 ${
-        router.pathname == '/'
-          ? 'font-semibold text-amber-400'
-          : 'text-slate-50'
-      }`}
-        >
-          Home
-        </Link>
-      </li>
-      <li>
-        <Link
           href="/categories"
           className={`
       transition-all duration-300 hover:text-amber-500 active:text-amber-300 ${
